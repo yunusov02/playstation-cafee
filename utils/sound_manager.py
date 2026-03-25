@@ -26,8 +26,8 @@ class SoundManager:
             cls._qt_version = 6
         except ImportError:
             try:
-                from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent
-                from PyQt5.QtCore import QUrl
+                from PyQt6.QtMultimedia import QMediaPlayer, QAudioOutput
+                from PyQt6.QtCore import QUrl
                 cls._player = QMediaPlayer()
                 cls._qt_version = 5
             except ImportError:
@@ -71,11 +71,11 @@ class SoundManager:
                 from PyQt6.QtCore import QUrl
                 cls._player.setSource(QUrl.fromLocalFile(str(sound_path)))
                 cls._player.play()
-            elif cls._qt_version == 5:
-                from PyQt5.QtMultimedia import QMediaContent
-                from PyQt5.QtCore import QUrl
-                cls._player.setMedia(QMediaContent(QUrl.fromLocalFile(str(sound_path))))
-                cls._player.play()
+            # elif cls._qt_version == 5:
+            #     from PyQt6.QtMultimedia import QMediaContent
+            #     from PyQt6.QtCore import QUrl
+            #     cls._player.setMedia(QMediaContent(QUrl.fromLocalFile(str(sound_path))))
+            #     cls._player.play()
         except Exception:
             cls._simple_beep()
     

@@ -1,0 +1,15 @@
+altgraph==0.17.5
+greenlet==3.3.2
+packaging==26.0
+pillow==12.1.1
+pyinstaller==6.19.0
+pyinstaller-hooks-contrib==2026.3
+PyQt5==5.15.11
+PyQt5-Qt5==5.15.18
+PyQt5_sip==12.18.0
+PyQt6==6.10.2
+PyQt6-Qt6==6.10.2
+PyQt6_sip==13.11.1
+setuptools==82.0.1
+SQLAlchemy==2.0.48
+typing_extensions==4.15.0
