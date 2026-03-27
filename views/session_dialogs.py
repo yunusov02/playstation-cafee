@@ -54,8 +54,8 @@ class StartSessionDialog(QDialog):
         hourly_layout.addWidget(self.hourly_radio)
         
         self.hours_spin = QDoubleSpinBox()
-        self.hours_spin.setRange(0.5, 12)
-        self.hours_spin.setSingleStep(0.5)
+        self.hours_spin.setRange(0.1, 12)
+        self.hours_spin.setSingleStep(0.1)
         self.hours_spin.setValue(1)
         self.hours_spin.setSuffix(" часов")
         self.hours_spin.valueChanged.connect(self._update_preview)
@@ -71,8 +71,8 @@ class StartSessionDialog(QDialog):
         
         self.amount_spin = QSpinBox()
         self.amount_spin.setRange(5000, 500000)
-        self.amount_spin.setSingleStep(5000)
-        self.amount_spin.setValue(15000)
+        self.amount_spin.setSingleStep(1000)
+        self.amount_spin.setValue(int(self.ps_price))
         self.amount_spin.setSuffix(" UZS")
         self.amount_spin.valueChanged.connect(self._update_preview)
         amount_layout.addWidget(self.amount_spin)

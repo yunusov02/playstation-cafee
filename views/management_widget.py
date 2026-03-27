@@ -39,10 +39,12 @@ class ManagementWidget(QWidget):
         
         ps_btn_layout = QHBoxLayout()
         add_ps_btn = QPushButton("➕ Добавить PlayStation")
+        add_ps_btn.setStyleSheet(self._get_add_button_style())
         add_ps_btn.clicked.connect(self.add_playstation)
         ps_btn_layout.addWidget(add_ps_btn)
         
         refresh_ps_btn = QPushButton("🔄 Обновить")
+        refresh_ps_btn.setStyleSheet(self._get_refresh_button_style())
         refresh_ps_btn.clicked.connect(self.load_playstations)
         ps_btn_layout.addWidget(refresh_ps_btn)
         
@@ -52,9 +54,15 @@ class ManagementWidget(QWidget):
         self.ps_table = QTableWidget()
         self.ps_table.setColumnCount(5)
         self.ps_table.setHorizontalHeaderLabels(["ID", "Имя", "Модель", "Цена/час", "Действия"])
-        self.ps_table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
+        self.ps_table.horizontalHeader().setSectionResizeMode(0, QHeaderView.ResizeMode.ResizeToContents)
+        self.ps_table.horizontalHeader().setSectionResizeMode(1, QHeaderView.ResizeMode.Stretch)
+        self.ps_table.horizontalHeader().setSectionResizeMode(2, QHeaderView.ResizeMode.Stretch)
+        self.ps_table.horizontalHeader().setSectionResizeMode(3, QHeaderView.ResizeMode.ResizeToContents)
+        self.ps_table.horizontalHeader().setSectionResizeMode(4, QHeaderView.ResizeMode.Fixed)
+        self.ps_table.setColumnWidth(4, 220)
         self.ps_table.setAlternatingRowColors(True)
         self.ps_table.setSelectionBehavior(QTableWidget.SelectionBehavior.SelectRows)
+        self.ps_table.setStyleSheet(self._get_table_style())
         ps_layout.addWidget(self.ps_table)
         
         tabs.addTab(ps_tab, "🎮 PlayStation")
@@ -65,10 +73,12 @@ class ManagementWidget(QWidget):
         
         joy_btn_layout = QHBoxLayout()
         add_joy_btn = QPushButton("➕ Добавить Joystick")
+        add_joy_btn.setStyleSheet(self._get_add_button_style())
         add_joy_btn.clicked.connect(self.add_joystick)
         joy_btn_layout.addWidget(add_joy_btn)
         
         refresh_joy_btn = QPushButton("🔄 Обновить")
+        refresh_joy_btn.setStyleSheet(self._get_refresh_button_style())
         refresh_joy_btn.clicked.connect(self.load_joysticks)
         joy_btn_layout.addWidget(refresh_joy_btn)
         
@@ -76,16 +86,31 @@ class ManagementWidget(QWidget):
         
         # Joystick stats
         self.joy_stats_label = QLabel("Доступно: 0 / Всего: 0")
+        self.joy_stats_label.setStyleSheet("""
+            QLabel {
+                background-color: #2196F3;
+                color: white;
+                padding: 8px 15px;
+                border-radius: 5px;
+                font-weight: bold;
+            }
+        """)
         joy_btn_layout.addWidget(self.joy_stats_label)
         
         joy_layout.addLayout(joy_btn_layout)
         
         self.joy_table = QTableWidget()
-        self.joy_table.setColumnCount(6)
-        self.joy_table.setHorizontalHeaderLabels(["ID", "Имя", "Модель", "Цена/час", "Статус", "Действия"])
-        self.joy_table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
+        self.joy_table.setColumnCount(5)
+        self.joy_table.setHorizontalHeaderLabels(["ID", "Имя", "Модель", "Цена/час", "Действия"])
+        self.joy_table.horizontalHeader().setSectionResizeMode(0, QHeaderView.ResizeMode.ResizeToContents)
+        self.joy_table.horizontalHeader().setSectionResizeMode(1, QHeaderView.ResizeMode.Stretch)
+        self.joy_table.horizontalHeader().setSectionResizeMode(2, QHeaderView.ResizeMode.Stretch)
+        self.joy_table.horizontalHeader().setSectionResizeMode(3, QHeaderView.ResizeMode.ResizeToContents)
+        self.joy_table.horizontalHeader().setSectionResizeMode(4, QHeaderView.ResizeMode.Fixed)
+        self.joy_table.setColumnWidth(4, 220)
         self.joy_table.setAlternatingRowColors(True)
         self.joy_table.setSelectionBehavior(QTableWidget.SelectionBehavior.SelectRows)
+        self.joy_table.setStyleSheet(self._get_table_style())
         joy_layout.addWidget(self.joy_table)
         
         tabs.addTab(joy_tab, "🕹️ Joysticks")
@@ -96,10 +121,12 @@ class ManagementWidget(QWidget):
         
         users_btn_layout = QHBoxLayout()
         add_user_btn = QPushButton("➕ Добавить Admin")
+        add_user_btn.setStyleSheet(self._get_add_button_style())
         add_user_btn.clicked.connect(self.add_user)
         users_btn_layout.addWidget(add_user_btn)
         
         refresh_users_btn = QPushButton("🔄 Обновить")
+        refresh_users_btn.setStyleSheet(self._get_refresh_button_style())
         refresh_users_btn.clicked.connect(self.load_users)
         users_btn_layout.addWidget(refresh_users_btn)
         
@@ -109,14 +136,156 @@ class ManagementWidget(QWidget):
         self.users_table = QTableWidget()
         self.users_table.setColumnCount(5)
         self.users_table.setHorizontalHeaderLabels(["ID", "Имя пользователя", "Username", "Последний вход", "Действия"])
-        self.users_table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
+        self.users_table.horizontalHeader().setSectionResizeMode(0, QHeaderView.ResizeMode.ResizeToContents)
+        self.users_table.horizontalHeader().setSectionResizeMode(1, QHeaderView.ResizeMode.Stretch)
+        self.users_table.horizontalHeader().setSectionResizeMode(2, QHeaderView.ResizeMode.Stretch)
+        self.users_table.horizontalHeader().setSectionResizeMode(3, QHeaderView.ResizeMode.ResizeToContents)
+        self.users_table.horizontalHeader().setSectionResizeMode(4, QHeaderView.ResizeMode.Fixed)
+        self.users_table.setColumnWidth(4, 220)
         self.users_table.setAlternatingRowColors(True)
         self.users_table.setSelectionBehavior(QTableWidget.SelectionBehavior.SelectRows)
+        self.users_table.setStyleSheet(self._get_table_style())
         users_layout.addWidget(self.users_table)
         
-        tabs.addTab(users_tab, "👥 Пользователы")
+        tabs.addTab(users_tab, "👥 Пользователи")
         
         layout.addWidget(tabs)
+    
+    def _get_table_style(self):
+        """Return table stylesheet"""
+        return """
+            QTableWidget {
+                background-color: #FFFFFF;
+                alternate-background-color: #F5F5F5;
+                color: #333333;
+                gridline-color: #E0E0E0;
+                border: 1px solid #CCCCCC;
+                border-radius: 5px;
+            }
+            QTableWidget::item {
+                padding: 8px;
+                border-bottom: 1px solid #E0E0E0;
+            }
+            QTableWidget::item:selected {
+                background-color: #1976D2;
+                color: #FFFFFF;
+            }
+            QHeaderView::section {
+                background-color: #F0F0F0;
+                color: #333333;
+                padding: 10px;
+                border: none;
+                border-bottom: 2px solid #1976D2;
+                font-weight: bold;
+            }
+        """
+    
+    def _get_add_button_style(self):
+        """Return add button stylesheet"""
+        return """
+            QPushButton {
+                background-color: #4CAF50;
+                color: white;
+                border: none;
+                padding: 10px 20px;
+                border-radius: 5px;
+                font-weight: bold;
+                font-size: 13px;
+            }
+            QPushButton:hover {
+                background-color: #45a049;
+            }
+            QPushButton:pressed {
+                background-color: #3d8b40;
+            }
+        """
+    
+    def _get_refresh_button_style(self):
+        """Return refresh button stylesheet"""
+        return """
+            QPushButton {
+                background-color: #2196F3;
+                color: white;
+                border: none;
+                padding: 10px 20px;
+                border-radius: 5px;
+                font-weight: bold;
+                font-size: 13px;
+            }
+            QPushButton:hover {
+                background-color: #1e88e5;
+            }
+            QPushButton:pressed {
+                background-color: #1976d2;
+            }
+        """
+    
+    def _get_edit_button_style(self):
+        """Return edit button stylesheet"""
+        return """
+            QPushButton {
+                background-color: #FF9800;
+                color: white;
+                border: none;
+                padding: 6px 12px;
+                border-radius: 4px;
+                font-weight: bold;
+                font-size: 12px;
+                min-width: 90px;
+            }
+            QPushButton:hover {
+                background-color: #F57C00;
+            }
+            QPushButton:pressed {
+                background-color: #E65100;
+            }
+        """
+    
+    def _get_delete_button_style(self):
+        """Return delete button stylesheet"""
+        return """
+            QPushButton {
+                background-color: #F44336;
+                color: white;
+                border: none;
+                padding: 6px 12px;
+                border-radius: 4px;
+                font-weight: bold;
+                font-size: 12px;
+                min-width: 90px;
+            }
+            QPushButton:hover {
+                background-color: #E53935;
+            }
+            QPushButton:pressed {
+                background-color: #C62828;
+            }
+        """
+    
+    def _create_action_buttons(self, edit_callback, delete_callback=None):
+        """Create action buttons widget for table rows"""
+        actions_widget = QWidget()
+        actions_widget.setStyleSheet("background-color: transparent;")
+        actions_layout = QHBoxLayout(actions_widget)
+        actions_layout.setContentsMargins(5, 5, 5, 5)
+        actions_layout.setSpacing(8)
+        
+        edit_btn = QPushButton("✏️ Изменить")
+        edit_btn.setStyleSheet(self._get_edit_button_style())
+        edit_btn.setCursor(Qt.CursorShape.PointingHandCursor)
+        edit_btn.clicked.connect(edit_callback)
+        actions_layout.addWidget(edit_btn)
+        
+        if delete_callback:
+            delete_btn = QPushButton("🗑️ Удалить")
+            delete_btn.setStyleSheet(self._get_delete_button_style())
+            delete_btn.setCursor(Qt.CursorShape.PointingHandCursor)
+            delete_btn.clicked.connect(delete_callback)
+            actions_layout.addWidget(delete_btn)
+        
+        actions_layout.addStretch()
+        
+        return actions_widget
     
     def load_data(self):
         """Load all data"""
@@ -130,33 +299,26 @@ class ManagementWidget(QWidget):
         self.ps_table.setRowCount(len(playstations))
         
         for i, ps in enumerate(playstations):
+            # Set row height
+            self.ps_table.setRowHeight(i, 50)
+            
             self.ps_table.setItem(i, 0, QTableWidgetItem(str(ps.id)))
             self.ps_table.setItem(i, 1, QTableWidgetItem(ps.name))
             self.ps_table.setItem(i, 2, QTableWidgetItem(ps.model))
             self.ps_table.setItem(i, 3, QTableWidgetItem(format_currency(ps.price_per_hour)))
             
+            # Center align items
+            for col in range(4):
+                item = self.ps_table.item(i, col)
+                if item:
+                    item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
+            
             # Actions
-            actions_widget = QWidget()
-            actions_layout = QHBoxLayout(actions_widget)
-            actions_layout.setContentsMargins(5, 2, 5, 2)
-            actions_layout.setSpacing(5)
-            
-            edit_btn = QPushButton("✏️ Изменить")
-            edit_btn.setFixedWidth(80)
-            edit_btn.clicked.connect(lambda checked, pid=ps.id: self.edit_playstation(pid))
-            actions_layout.addWidget(edit_btn)
-            
-            delete_btn = QPushButton("🗑️ Удалить")
-            delete_btn.setFixedWidth(80)
-            delete_btn.setStyleSheet("background-color: #F44336;")
-            delete_btn.clicked.connect(lambda checked, pid=ps.id: self.delete_playstation(pid))
-            actions_layout.addWidget(delete_btn)
-            
-            actions_layout.addStretch()
-            
+            actions_widget = self._create_action_buttons(
+                lambda checked, pid=ps.id: self.edit_playstation(pid),
+                lambda checked, pid=ps.id: self.delete_playstation(pid)
+            )
             self.ps_table.setCellWidget(i, 4, actions_widget)
-        
-        self.ps_table.resizeRowsToContents()
     
     def load_joysticks(self):
         """Load joysticks into table"""
@@ -168,43 +330,26 @@ class ManagementWidget(QWidget):
         self.joy_stats_label.setText(f"Доступно: {available} / Всего: {total}")
         
         for i, joy in enumerate(joysticks):
+            # Set row height
+            self.joy_table.setRowHeight(i, 50)
+            
             self.joy_table.setItem(i, 0, QTableWidgetItem(str(joy.id)))
             self.joy_table.setItem(i, 1, QTableWidgetItem(joy.name))
             self.joy_table.setItem(i, 2, QTableWidgetItem(joy.model))
             self.joy_table.setItem(i, 3, QTableWidgetItem(format_currency(joy.price_per_hour)))
             
-            # Status with color
-            status_item = QTableWidgetItem(joy.status.value.upper())
-            if joy.status.value == "available":
-                status_item.setBackground(Qt.GlobalColor.green)
-            elif joy.status.value == "in_use":
-                status_item.setBackground(Qt.GlobalColor.yellow)
-            else:
-                status_item.setBackground(Qt.GlobalColor.red)
-            self.joy_table.setItem(i, 4, status_item)
+            # Center align items
+            for col in range(4):
+                item = self.joy_table.item(i, col)
+                if item:
+                    item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
             
-            # Actions
-            actions_widget = QWidget()
-            actions_layout = QHBoxLayout(actions_widget)
-            actions_layout.setContentsMargins(5, 2, 5, 2)
-            actions_layout.setSpacing(5)
-            
-            edit_btn = QPushButton("✏️ Изменить")
-            edit_btn.setFixedWidth(80)
-            edit_btn.clicked.connect(lambda checked, jid=joy.id: self.edit_joystick(jid))
-            actions_layout.addWidget(edit_btn)
-            
-            delete_btn = QPushButton("🗑️ Удалить")
-            delete_btn.setFixedWidth(80)
-            delete_btn.setStyleSheet("background-color: #F44336;")
-            delete_btn.clicked.connect(lambda checked, jid=joy.id: self.delete_joystick(jid))
-            actions_layout.addWidget(delete_btn)
-            
-            actions_layout.addStretch()
-            
-            self.joy_table.setCellWidget(i, 5, actions_widget)
-        
-        self.joy_table.resizeRowsToContents()
+            # Actions - Fixed: using column index 4, not 5
+            actions_widget = self._create_action_buttons(
+                lambda checked, jid=joy.id: self.edit_joystick(jid),
+                lambda checked, jid=joy.id: self.delete_joystick(jid)
+            )
+            self.joy_table.setCellWidget(i, 4, actions_widget)
     
     def load_users(self):
         """Load users into table"""
@@ -214,6 +359,9 @@ class ManagementWidget(QWidget):
         current_user = AuthController.get_current_user()
         
         for i, user in enumerate(users):
+            # Set row height
+            self.users_table.setRowHeight(i, 50)
+            
             self.users_table.setItem(i, 0, QTableWidgetItem(str(user.id)))
             self.users_table.setItem(i, 1, QTableWidgetItem(user.full_name))
             self.users_table.setItem(i, 2, QTableWidgetItem(user.username))
@@ -222,31 +370,23 @@ class ManagementWidget(QWidget):
             last_login = user.last_login.strftime("%Y-%m-%d %H:%M") if user.last_login else "Never"
             self.users_table.setItem(i, 3, QTableWidgetItem(last_login))
             
-            # Actions
-            actions_widget = QWidget()
-            actions_layout = QHBoxLayout(actions_widget)
-            actions_layout.setContentsMargins(5, 2, 5, 2)
-            actions_layout.setSpacing(5)
+            # Center align items
+            for col in range(4):
+                item = self.users_table.item(i, col)
+                if item:
+                    item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
             
-            edit_btn = QPushButton("✏️ Изменить")
-            edit_btn.setFixedWidth(80)
-            edit_btn.clicked.connect(lambda checked, uid=user.id: self.edit_user(uid))
-            actions_layout.addWidget(edit_btn)
-            
-            # Don't allow deleting own account
+            # Actions - Don't allow deleting own account
+            delete_callback = None
             if current_user and user.id != current_user.id:
-                delete_btn = QPushButton("🗑️ Удалить")
-                delete_btn.setFixedWidth(80)
-                delete_btn.setStyleSheet("background-color: #F44336;")
-                delete_btn.clicked.connect(lambda checked, uid=user.id: self.delete_user(uid))
-                actions_layout.addWidget(delete_btn)
+                delete_callback = lambda checked, uid=user.id: self.delete_user(uid)
             
-            actions_layout.addStretch()
-            
+            actions_widget = self._create_action_buttons(
+                lambda checked, uid=user.id: self.edit_user(uid),
+                delete_callback
+            )
             self.users_table.setCellWidget(i, 4, actions_widget)
-        
-        self.users_table.resizeRowsToContents()
-    
+
     # ============== PLAYSTATION CRUD ==============
     
     def add_playstation(self):

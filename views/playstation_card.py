@@ -9,6 +9,7 @@ from models import Playstation, PlaystationStatus, SessionType
 from controllers import SessionController
 from utils import StyleManager, format_time, format_currency
 from config import CARD_WIDTH, CARD_HEIGHT
+from utils.sound_manager import SoundManager
 
 
 class PlaystationCard(QFrame):
@@ -33,7 +34,10 @@ class PlaystationCard(QFrame):
         # Timer for live updates
         self.update_timer = QTimer(self)
         self.update_timer.timeout.connect(self.update_timer_display)
-        self.update_timer.start(1000)  # Update every second
+        self.update_timer.start(1000)  # Update every 2 seconds
+
+        self.waring_played = False
+        self.end_played = False
     
     def setup_ui(self):
         """Setup UI components"""
@@ -100,6 +104,7 @@ class PlaystationCard(QFrame):
         buttons_layout.addWidget(self.start_btn)
         
         self.modify_btn = QPushButton("Изменить")
+        self.modify_btn.setProperty("class", "warning")
         self.modify_btn.clicked.connect(self._on_modify_clicked)
         buttons_layout.addWidget(self.modify_btn)
         
@@ -166,8 +171,21 @@ class PlaystationCard(QFrame):
             # Show remaining time for hourly/amount
             if remaining < 0:
                 self.timer_label.setStyleSheet("color: #F44336;")  # Red for overdue
+                
+                if not self.end_played:
+                    SoundManager.play_timeout()
+                    SoundManager.play_timeout()
+                    SoundManager.play_timeout()
+                    self.end_played = True
             elif remaining < 300:
                 self.timer_label.setStyleSheet("color: #FF9800;")  # Orange for warning
+
+                if not self.waring_played:
+                    SoundManager.play_warning()
+                    SoundManager.play_warning()
+                    SoundManager.play_warning()
+                    self.waring_played = True
+
             self.timer_label.setText(format_time(remaining))
         else:
             self.timer_label.setText(format_time(elapsed))
