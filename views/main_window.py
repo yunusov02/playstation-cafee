@@ -14,14 +14,15 @@ from views.settings_widget import SettingsWidget
 from views.management_widget import ManagementWidget
 from controllers import AuthController
 from utils import StyleManager
-
+from config import APP_NAME
 
 class MainWindow(QMainWindow):
-    """Main application window"""
-    
+    """
+    Main application window
+    """
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("PlayStation Cafe Management System")
+        self.setWindowTitle(f"{APP_NAME}")
         self.setMinimumSize(1200, 800)
         
         self.current_page = None
@@ -51,7 +52,7 @@ class MainWindow(QMainWindow):
         sidebar_layout.setSpacing(15)
         
         # Logo/Title
-        logo_label = QLabel("🎮 PlayStation\nCafe Manager")
+        logo_label = QLabel(f"🎮 PlayStation\n{APP_NAME}")
         logo_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         logo_font = QFont()
         logo_font.setPointSize(18)
@@ -62,22 +63,22 @@ class MainWindow(QMainWindow):
         sidebar_layout.addSpacing(30)
         
         # Navigation buttons
-        self.dashboard_btn = QPushButton("📊 Dashboard")
+        self.dashboard_btn = QPushButton("📊 Панель управление")
         self.dashboard_btn.setCheckable(True)
         self.dashboard_btn.clicked.connect(self.show_dashboard)
         sidebar_layout.addWidget(self.dashboard_btn)
         
-        self.reports_btn = QPushButton("📈 Reports")
+        self.reports_btn = QPushButton("📈 Отчеты")
         self.reports_btn.setCheckable(True)
         self.reports_btn.clicked.connect(self.show_reports)
         sidebar_layout.addWidget(self.reports_btn)
         
-        self.management_btn = QPushButton("⚙️ Management")
+        self.management_btn = QPushButton("⚙️ Управление")
         self.management_btn.setCheckable(True)
         self.management_btn.clicked.connect(self.show_management)
         sidebar_layout.addWidget(self.management_btn)
         
-        self.settings_btn = QPushButton("🔧 Settings")
+        self.settings_btn = QPushButton("🔧 Настройки")
         self.settings_btn.setCheckable(True)
         self.settings_btn.clicked.connect(self.show_settings)
         sidebar_layout.addWidget(self.settings_btn)
@@ -92,7 +93,7 @@ class MainWindow(QMainWindow):
             sidebar_layout.addWidget(user_label)
         
         # Logout button
-        logout_btn = QPushButton("🚪 Logout")
+        logout_btn = QPushButton("🚪 Выйти")
         logout_btn.setProperty("class", "danger")
         logout_btn.clicked.connect(self.logout)
         sidebar_layout.addWidget(logout_btn)
@@ -193,8 +194,8 @@ class MainWindow(QMainWindow):
     def logout(self):
         """Logout current user"""
         reply = QMessageBox.question(
-            self, "Confirm Logout",
-            "Are you sure you want to logout?",
+            self, "Вы уверены?",
+            "Вы действительно хотите выйти из системы?",
             QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No
         )
         
@@ -212,8 +213,8 @@ class MainWindow(QMainWindow):
     def closeEvent(self, event):
         """Handle window close"""
         reply = QMessageBox.question(
-            self, "Confirm Exit",
-            "Are you sure you want to exit?",
+            self, "Подтверждение выхода",
+            "Вы уверены, что хотите выйти?",
             QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No
         )
         

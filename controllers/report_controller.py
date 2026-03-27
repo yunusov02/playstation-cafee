@@ -1,6 +1,3 @@
-"""
-Report generation controller
-"""
 from datetime import datetime, timedelta
 from typing import Dict, List, Any, Tuple
 from sqlalchemy import func, and_
@@ -10,35 +7,36 @@ from models import Session, SessionSegment, Playstation, PaymentType
 
 
 class ReportController:
-    """Controller for generating reports"""
+    """
+    Controller for generating reports
+    """
     
     @staticmethod
     def get_daily_report(date: datetime = None) -> Dict[str, Any]:
-        """Generate daily report"""
+
         if date is None:
             date = datetime.now()
         
         start_of_day = date.replace(hour=0, minute=0, second=0, microsecond=0)
         end_of_day = start_of_day + timedelta(days=1)
         
-        return ReportController._generate_report(start_of_day, end_of_day, "Daily")
+        return ReportController._generate_report(start_of_day, end_of_day, "Ежедневный")
     
     @staticmethod
     def get_weekly_report(date: datetime = None) -> Dict[str, Any]:
-        """Generate weekly report"""
+
         if date is None:
             date = datetime.now()
         
-        # Start from Monday
         start_of_week = date - timedelta(days=date.weekday())
         start_of_week = start_of_week.replace(hour=0, minute=0, second=0, microsecond=0)
         end_of_week = start_of_week + timedelta(days=7)
         
-        return ReportController._generate_report(start_of_week, end_of_week, "Weekly")
+        return ReportController._generate_report(start_of_week, end_of_week, "Еженедельный")
     
     @staticmethod
     def get_monthly_report(year: int = None, month: int = None) -> Dict[str, Any]:
-        """Generate monthly report"""
+
         if year is None or month is None:
             now = datetime.now()
             year = now.year
@@ -50,20 +48,19 @@ class ReportController:
         else:
             end_of_month = datetime(year, month + 1, 1)
         
-        return ReportController._generate_report(start_of_month, end_of_month, "Monthly")
+        return ReportController._generate_report(start_of_month, end_of_month, "Месячный")
     
     @staticmethod
     def get_custom_report(start_date: datetime, end_date: datetime) -> Dict[str, Any]:
-        """Generate custom date range report"""
         start_date = start_date.replace(hour=0, minute=0, second=0, microsecond=0)
         end_date = end_date.replace(hour=23, minute=59, second=59, microsecond=999999)
         
-        return ReportController._generate_report(start_date, end_date, "Custom")
+        return ReportController._generate_report(start_date, end_date, "Пользовательский")
     
     @staticmethod
     def _generate_report(start_date: datetime, end_date: datetime, 
                         report_type: str) -> Dict[str, Any]:
-        """Generate report for date range"""
+
         db = get_db()
         
         # Get all completed sessions in date range
@@ -163,7 +160,6 @@ class ReportController:
     
     @staticmethod
     def get_session_history(limit: int = 100, offset: int = 0) -> List[Session]:
-        """Get session history"""
         db = get_db()
         return db.query(Session).filter(
             Session.is_active == False
@@ -171,7 +167,6 @@ class ReportController:
     
     @staticmethod
     def export_report_to_dict(report: Dict[str, Any]) -> Dict[str, Any]:
-        """Convert report to exportable dictionary"""
         export_data = report.copy()
         
         # Convert datetime objects to strings

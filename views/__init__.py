@@ -1,6 +1,3 @@
-"""
-Views package
-"""
 from .main_window import MainWindow
 from .login_dialog import LoginDialog
 from .dashboard_widget import DashboardWidget

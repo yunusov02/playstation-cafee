@@ -1,6 +1,3 @@
-"""
-Management widget for playstations, joysticks, and users
-"""
 from PyQt6.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton,
     QTabWidget, QTableWidget, QTableWidgetItem, QDialog,
@@ -29,7 +26,7 @@ class ManagementWidget(QWidget):
         layout.setSpacing(15)
         
         # Title
-        title = QLabel("⚙️ Management")
+        title = QLabel("⚙️ Управление")
         title.setStyleSheet("font-size: 24px; font-weight: bold;")
         layout.addWidget(title)
         
@@ -41,11 +38,11 @@ class ManagementWidget(QWidget):
         ps_layout = QVBoxLayout(ps_tab)
         
         ps_btn_layout = QHBoxLayout()
-        add_ps_btn = QPushButton("➕ Add Playstation")
+        add_ps_btn = QPushButton("➕ Добавить PlayStation")
         add_ps_btn.clicked.connect(self.add_playstation)
         ps_btn_layout.addWidget(add_ps_btn)
         
-        refresh_ps_btn = QPushButton("🔄 Refresh")
+        refresh_ps_btn = QPushButton("🔄 Обновить")
         refresh_ps_btn.clicked.connect(self.load_playstations)
         ps_btn_layout.addWidget(refresh_ps_btn)
         
@@ -54,38 +51,38 @@ class ManagementWidget(QWidget):
         
         self.ps_table = QTableWidget()
         self.ps_table.setColumnCount(5)
-        self.ps_table.setHorizontalHeaderLabels(["ID", "Name", "Model", "Price/Hour", "Actions"])
+        self.ps_table.setHorizontalHeaderLabels(["ID", "Имя", "Модель", "Цена/час", "Действия"])
         self.ps_table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
         self.ps_table.setAlternatingRowColors(True)
         self.ps_table.setSelectionBehavior(QTableWidget.SelectionBehavior.SelectRows)
         ps_layout.addWidget(self.ps_table)
         
-        tabs.addTab(ps_tab, "🎮 Playstations")
+        tabs.addTab(ps_tab, "🎮 PlayStation")
         
         # Joysticks tab
         joy_tab = QWidget()
         joy_layout = QVBoxLayout(joy_tab)
         
         joy_btn_layout = QHBoxLayout()
-        add_joy_btn = QPushButton("➕ Add Joystick")
+        add_joy_btn = QPushButton("➕ Добавить Joystick")
         add_joy_btn.clicked.connect(self.add_joystick)
         joy_btn_layout.addWidget(add_joy_btn)
         
-        refresh_joy_btn = QPushButton("🔄 Refresh")
+        refresh_joy_btn = QPushButton("🔄 Обновить")
         refresh_joy_btn.clicked.connect(self.load_joysticks)
         joy_btn_layout.addWidget(refresh_joy_btn)
         
         joy_btn_layout.addStretch()
         
         # Joystick stats
-        self.joy_stats_label = QLabel("Available: 0 / Total: 0")
+        self.joy_stats_label = QLabel("Доступно: 0 / Всего: 0")
         joy_btn_layout.addWidget(self.joy_stats_label)
         
         joy_layout.addLayout(joy_btn_layout)
         
         self.joy_table = QTableWidget()
         self.joy_table.setColumnCount(6)
-        self.joy_table.setHorizontalHeaderLabels(["ID", "Name", "Model", "Price/Hour", "Status", "Actions"])
+        self.joy_table.setHorizontalHeaderLabels(["ID", "Имя", "Модель", "Цена/час", "Статус", "Действия"])
         self.joy_table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
         self.joy_table.setAlternatingRowColors(True)
         self.joy_table.setSelectionBehavior(QTableWidget.SelectionBehavior.SelectRows)
@@ -98,11 +95,11 @@ class ManagementWidget(QWidget):
         users_layout = QVBoxLayout(users_tab)
         
         users_btn_layout = QHBoxLayout()
-        add_user_btn = QPushButton("➕ Add Admin")
+        add_user_btn = QPushButton("➕ Добавить Admin")
         add_user_btn.clicked.connect(self.add_user)
         users_btn_layout.addWidget(add_user_btn)
         
-        refresh_users_btn = QPushButton("🔄 Refresh")
+        refresh_users_btn = QPushButton("🔄 Обновить")
         refresh_users_btn.clicked.connect(self.load_users)
         users_btn_layout.addWidget(refresh_users_btn)
         
@@ -111,13 +108,13 @@ class ManagementWidget(QWidget):
         
         self.users_table = QTableWidget()
         self.users_table.setColumnCount(5)
-        self.users_table.setHorizontalHeaderLabels(["ID", "Full Name", "Username", "Last Login", "Actions"])
+        self.users_table.setHorizontalHeaderLabels(["ID", "Имя пользователя", "Username", "Последний вход", "Действия"])
         self.users_table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
         self.users_table.setAlternatingRowColors(True)
         self.users_table.setSelectionBehavior(QTableWidget.SelectionBehavior.SelectRows)
         users_layout.addWidget(self.users_table)
         
-        tabs.addTab(users_tab, "👥 Admins")
+        tabs.addTab(users_tab, "👥 Пользователы")
         
         layout.addWidget(tabs)
     
@@ -144,12 +141,12 @@ class ManagementWidget(QWidget):
             actions_layout.setContentsMargins(5, 2, 5, 2)
             actions_layout.setSpacing(5)
             
-            edit_btn = QPushButton("✏️ Edit")
+            edit_btn = QPushButton("✏️ Изменить")
             edit_btn.setFixedWidth(80)
             edit_btn.clicked.connect(lambda checked, pid=ps.id: self.edit_playstation(pid))
             actions_layout.addWidget(edit_btn)
             
-            delete_btn = QPushButton("🗑️ Delete")
+            delete_btn = QPushButton("🗑️ Удалить")
             delete_btn.setFixedWidth(80)
             delete_btn.setStyleSheet("background-color: #F44336;")
             delete_btn.clicked.connect(lambda checked, pid=ps.id: self.delete_playstation(pid))
@@ -168,7 +165,7 @@ class ManagementWidget(QWidget):
         
         available = JoystickController.get_available_count()
         total = JoystickController.get_total_count()
-        self.joy_stats_label.setText(f"Available: {available} / Total: {total}")
+        self.joy_stats_label.setText(f"Доступно: {available} / Всего: {total}")
         
         for i, joy in enumerate(joysticks):
             self.joy_table.setItem(i, 0, QTableWidgetItem(str(joy.id)))
@@ -192,12 +189,12 @@ class ManagementWidget(QWidget):
             actions_layout.setContentsMargins(5, 2, 5, 2)
             actions_layout.setSpacing(5)
             
-            edit_btn = QPushButton("✏️ Edit")
+            edit_btn = QPushButton("✏️ Изменить")
             edit_btn.setFixedWidth(80)
             edit_btn.clicked.connect(lambda checked, jid=joy.id: self.edit_joystick(jid))
             actions_layout.addWidget(edit_btn)
             
-            delete_btn = QPushButton("🗑️ Delete")
+            delete_btn = QPushButton("🗑️ Удалить")
             delete_btn.setFixedWidth(80)
             delete_btn.setStyleSheet("background-color: #F44336;")
             delete_btn.clicked.connect(lambda checked, jid=joy.id: self.delete_joystick(jid))
@@ -231,14 +228,14 @@ class ManagementWidget(QWidget):
             actions_layout.setContentsMargins(5, 2, 5, 2)
             actions_layout.setSpacing(5)
             
-            edit_btn = QPushButton("✏️ Edit")
+            edit_btn = QPushButton("✏️ Изменить")
             edit_btn.setFixedWidth(80)
             edit_btn.clicked.connect(lambda checked, uid=user.id: self.edit_user(uid))
             actions_layout.addWidget(edit_btn)
             
             # Don't allow deleting own account
             if current_user and user.id != current_user.id:
-                delete_btn = QPushButton("🗑️ Delete")
+                delete_btn = QPushButton("🗑️ Удалить")
                 delete_btn.setFixedWidth(80)
                 delete_btn.setStyleSheet("background-color: #F44336;")
                 delete_btn.clicked.connect(lambda checked, uid=user.id: self.delete_user(uid))
@@ -254,22 +251,22 @@ class ManagementWidget(QWidget):
     
     def add_playstation(self):
         """Add new playstation"""
-        dialog = AddEditDialog("Add Playstation", [
-            ("Name", "text", ""),
-            ("Model", "combo", ["PS5", "PS4", "PS4 Pro", "PS3"]),
-            ("Price/Hour", "number", DEFAULT_PS_HOUR_PRICE)
+        dialog = AddEditDialog("Добавить PlayStation", [
+            ("Имя", "text", ""),
+            ("Модель", "combo", ["PS5", "PS4", "PS4 Pro", "PS3"]),
+            ("Цена/час", "number", DEFAULT_PS_HOUR_PRICE)
         ], self)
         
         if dialog.exec():
             values = dialog.get_values()
-            if not values["Name"].strip():
+            if not values["Имя"].strip():
                 QMessageBox.warning(self, "Error", "Name is required!")
                 return
                 
             success, message = PlaystationController.create_playstation(
-                name=values["Name"].strip(),
-                model=values["Model"],
-                price_per_hour=values["Price/Hour"]
+                name=values["Имя"].strip(),
+                model=values["Модель"],
+                price_per_hour=values["Цена/час"]
             )
             
             if success:
@@ -282,26 +279,26 @@ class ManagementWidget(QWidget):
         """Edit playstation"""
         ps = PlaystationController.get_playstation(ps_id)
         if not ps:
-            QMessageBox.warning(self, "Error", "Playstation not found!")
+            QMessageBox.warning(self, "Error", "Playstation не найден!")
             return
         
-        dialog = AddEditDialog("Edit Playstation", [
-            ("Name", "text", ps.name),
-            ("Model", "combo", ["PS5", "PS4", "PS4 Pro", "PS3"], ps.model),
-            ("Price/Hour", "number", ps.price_per_hour)
+        dialog = AddEditDialog("Изменить PlayStation", [
+            ("Имя", "text", ps.name),
+            ("Модель", "combo", ["PS5", "PS4", "PS4 Pro", "PS3"], ps.model),
+            ("Цена/час", "number", ps.price_per_hour)
         ], self)
         
         if dialog.exec():
             values = dialog.get_values()
-            if not values["Name"].strip():
+            if not values["Имя"].strip():
                 QMessageBox.warning(self, "Error", "Name is required!")
                 return
                 
             success, message = PlaystationController.update_playstation(
                 ps_id=ps_id,
-                name=values["Name"].strip(),
-                model=values["Model"],
-                price_per_hour=values["Price/Hour"]
+                name=values["Имя"].strip(),
+                model=values["Модель"],
+                price_per_hour=values["Цена/час"]
             )
             
             if success:
@@ -317,8 +314,8 @@ class ManagementWidget(QWidget):
             return
             
         reply = QMessageBox.question(
-            self, "Confirm Delete",
-            f"Are you sure you want to delete '{ps.name}'?\n\nThis action cannot be undone.",
+            self, "Вы уверены?",
+            f"Вы точно хотите удалить '{ps.name}'?\n\n Это действие нельзя будет отменить.",
             QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
             QMessageBox.StandardButton.No
         )
@@ -335,22 +332,22 @@ class ManagementWidget(QWidget):
     
     def add_joystick(self):
         """Add new joystick"""
-        dialog = AddEditDialog("Add Joystick", [
-            ("Name", "text", ""),
-            ("Model", "combo", ["DualSense", "DualShock 4", "DualShock 3"]),
-            ("Price/Hour", "number", DEFAULT_JOYSTICK_HOUR_PRICE)
+        dialog = AddEditDialog("Добавить Джойстик", [
+            ("Имя", "text", ""),
+            ("Модель", "combo", ["DualSense", "DualShock 4", "DualShock 3"]),
+            ("Цена/час", "number", DEFAULT_JOYSTICK_HOUR_PRICE)
         ], self)
         
         if dialog.exec():
             values = dialog.get_values()
-            if not values["Name"].strip():
+            if not values["Имя"].strip():
                 QMessageBox.warning(self, "Error", "Name is required!")
                 return
                 
             success, message = JoystickController.create_joystick(
-                name=values["Name"].strip(),
-                model=values["Model"],
-                price_per_hour=values["Price/Hour"]
+                name=values["Имя"].strip(),
+                model=values["Модель"],
+                price_per_hour=values["Цена/час"]
             )
             
             if success:
@@ -368,26 +365,26 @@ class ManagementWidget(QWidget):
         joystick = db.query(Joystick).filter(Joystick.id == joy_id).first()
         
         if not joystick:
-            QMessageBox.warning(self, "Error", "Joystick not found!")
+            QMessageBox.warning(self, "Error", "Joystick не найден!")
             return
         
-        dialog = AddEditDialog("Edit Joystick", [
-            ("Name", "text", joystick.name),
-            ("Model", "combo", ["DualSense", "DualShock 4", "DualShock 3"], joystick.model),
-            ("Price/Hour", "number", joystick.price_per_hour)
+        dialog = AddEditDialog("Изменить Джойстик", [
+            ("Имя", "text", joystick.name),
+            ("Модель", "combo", ["DualSense", "DualShock 4", "DualShock 3"], joystick.model),
+            ("Цена/час", "number", joystick.price_per_hour)
         ], self)
         
         if dialog.exec():
             values = dialog.get_values()
-            if not values["Name"].strip():
+            if not values["Имя"].strip():
                 QMessageBox.warning(self, "Error", "Name is required!")
                 return
                 
             success, message = JoystickController.update_joystick(
                 joystick_id=joy_id,
-                name=values["Name"].strip(),
-                model=values["Model"],
-                price_per_hour=values["Price/Hour"]
+                name=values["Имя"].strip(),
+                model=values["Модель"],
+                price_per_hour=values["Цена/час"]
             )
             
             if success:
@@ -408,8 +405,8 @@ class ManagementWidget(QWidget):
             return
             
         reply = QMessageBox.question(
-            self, "Confirm Delete",
-            f"Are you sure you want to delete '{joystick.name}'?\n\nThis action cannot be undone.",
+            self, "Вы уверены?",
+            f"Вы точно хотите удалить '{joystick.name}'?\n\n Это действие нельзя будет отменить.",
             QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
             QMessageBox.StandardButton.No
         )
@@ -426,33 +423,33 @@ class ManagementWidget(QWidget):
     
     def add_user(self):
         """Add new user"""
-        dialog = AddEditDialog("Add Admin User", [
-            ("Full Name", "text", ""),
-            ("Username", "text", ""),
-            ("Password", "password", "")
+        dialog = AddEditDialog("Добавить Администратора", [
+            ("Полное Имя", "text", ""),
+            ("Имя Пользователя", "text", ""),
+            ("Пароль", "password", "")
         ], self)
         
         if dialog.exec():
             values = dialog.get_values()
             
             # Validation
-            if not values["Full Name"].strip():
-                QMessageBox.warning(self, "Error", "Full Name is required!")
+            if not values["Полное Имя"].strip():
+                QMessageBox.warning(self, "Error", "Полное имя пользователя обязательно!")
                 return
-            if not values["Username"].strip():
-                QMessageBox.warning(self, "Error", "Username is required!")
+            if not values["Имя Пользователя"].strip():
+                QMessageBox.warning(self, "Error", "Имя пользователя обязательно!")
                 return
-            if not values["Password"]:
-                QMessageBox.warning(self, "Error", "Password is required!")
+            if not values["Пароль"]:
+                QMessageBox.warning(self, "Error", "Пароль обязателен!")
                 return
-            if len(values["Password"]) < 6:
-                QMessageBox.warning(self, "Error", "Password must be at least 6 characters!")
+            if len(values["Пароль"]) < 6:
+                QMessageBox.warning(self, "Error", "Пароль должен содержать не менее 6 символов!")
                 return
                 
             success, message = AuthController.create_user(
-                full_name=values["Full Name"].strip(),
-                username=values["Username"].strip(),
-                password=values["Password"]
+                full_name=values["Полное Имя"].strip(),
+                username=values["Имя Пользователя"].strip(),
+                password=values["Пароль"]
             )
             
             if success:
@@ -470,7 +467,7 @@ class ManagementWidget(QWidget):
         user = db.query(User).filter(User.id == user_id).first()
         
         if not user:
-            QMessageBox.warning(self, "Error", "User not found!")
+            QMessageBox.warning(self, "Error", "Пользователь не найден!")
             return
         
         dialog = EditUserDialog(user, self)
@@ -478,19 +475,19 @@ class ManagementWidget(QWidget):
         if dialog.exec():
             values = dialog.get_values()
             
-            if not values["Full Name"].strip():
-                QMessageBox.warning(self, "Error", "Full Name is required!")
+            if not values["Полное Имя"].strip():
+                QMessageBox.warning(self, "Error", "Полное имя пользователя обязательно!")
                 return
             
             # Check if password should be updated
-            new_password = values.get("New Password", "")
+            new_password = values.get("Новый Пароль", "")
             if new_password and len(new_password) < 6:
-                QMessageBox.warning(self, "Error", "Password must be at least 6 characters!")
+                QMessageBox.warning(self, "Error", "Пароль должен содержать не менее 6 символов!")
                 return
                 
             success, message = AuthController.update_user(
                 user_id=user_id,
-                full_name=values["Full Name"].strip(),
+                full_name=values["Полное Имя"].strip(),
                 password=new_password if new_password else None
             )
             
@@ -513,12 +510,12 @@ class ManagementWidget(QWidget):
         
         current_user = AuthController.get_current_user()
         if current_user and user.id == current_user.id:
-            QMessageBox.warning(self, "Error", "You cannot delete your own account!")
+            QMessageBox.warning(self, "Error", "Ты не можешь удалить свой собственный аккаунт!")
             return
             
         reply = QMessageBox.question(
-            self, "Confirm Delete",
-            f"Are you sure you want to delete user '{user.username}'?\n\nThis action cannot be undone.",
+            self, "Вы уверены?",
+            f"Вы точно хотите удалить '{user.full_name}'?\n\n Это действие нельзя будет отменить.",
             QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
             QMessageBox.StandardButton.No
         )
@@ -635,13 +632,13 @@ class AddEditDialog(QDialog):
         btn_layout = QHBoxLayout()
         btn_layout.setSpacing(10)
         
-        cancel_btn = QPushButton("Cancel")
+        cancel_btn = QPushButton("Отмена")
         cancel_btn.setMinimumHeight(40)
         cancel_btn.setProperty("class", "secondary")
         cancel_btn.clicked.connect(self.reject)
         btn_layout.addWidget(cancel_btn)
         
-        save_btn = QPushButton("💾 Save")
+        save_btn = QPushButton("💾 Сохранить")
         save_btn.setMinimumHeight(40)
         save_btn.setProperty("class", "success")
         save_btn.clicked.connect(self.accept)
@@ -755,7 +752,7 @@ class EditUserDialog(QDialog):
     def __init__(self, user, parent=None):
         super().__init__(parent)
         self.user = user
-        self.setWindowTitle(f"Edit User - {user.username}")
+        self.setWindowTitle(f"Обновить - {user.username}")
         self.setMinimumWidth(400)
         self.setModal(True)
         
@@ -770,7 +767,7 @@ class EditUserDialog(QDialog):
         layout.setSpacing(15)
         
         # Title
-        title_label = QLabel(f"✏️ Edit User: {self.user.username}")
+        title_label = QLabel(f"✏️ Обновить: {self.user.username}")
         title_label.setStyleSheet("font-size: 18px; font-weight: bold;")
         layout.addWidget(title_label)
         
@@ -788,8 +785,8 @@ class EditUserDialog(QDialog):
         self.full_name_input = QLineEdit()
         self.full_name_input.setText(self.user.full_name)
         self.full_name_input.setMinimumHeight(35)
-        form_layout.addRow("Full Name:", self.full_name_input)
-        self.fields["Full Name"] = self.full_name_input
+        form_layout.addRow("Полное имя:", self.full_name_input)
+        self.fields["Полное Имя"] = self.full_name_input
         
         # Username (read-only)
         username_input = QLineEdit()
@@ -797,7 +794,7 @@ class EditUserDialog(QDialog):
         username_input.setReadOnly(True)
         username_input.setMinimumHeight(35)
         username_input.setStyleSheet("background-color: #e0e0e0;")
-        form_layout.addRow("Username:", username_input)
+        form_layout.addRow("Имя пользователья:", username_input)
         
         layout.addLayout(form_layout)
         
@@ -813,24 +810,24 @@ class EditUserDialog(QDialog):
         """)
         password_layout = QVBoxLayout(password_group)
         
-        password_title = QLabel("🔐 Change Password (Optional)")
+        password_title = QLabel("🔐 Изменить Пароль (Опционально)")
         password_title.setStyleSheet("font-weight: bold; border: none;")
         password_layout.addWidget(password_title)
         
-        password_note = QLabel("Leave empty to keep current password")
+        password_note = QLabel("Оставьте пустым, чтобы сохранить текущий пароль")
         password_note.setStyleSheet("color: gray; font-size: 12px; border: none;")
         password_layout.addWidget(password_note)
         
         self.new_password_input = QLineEdit()
         self.new_password_input.setEchoMode(QLineEdit.EchoMode.Password)
-        self.new_password_input.setPlaceholderText("New password (min 6 characters)")
+        self.new_password_input.setPlaceholderText("Новый пароль (минимум 6 символов)")
         self.new_password_input.setMinimumHeight(35)
         password_layout.addWidget(self.new_password_input)
-        self.fields["New Password"] = self.new_password_input
+        self.fields["Новый Пароль"] = self.new_password_input
         
         self.confirm_password_input = QLineEdit()
         self.confirm_password_input.setEchoMode(QLineEdit.EchoMode.Password)
-        self.confirm_password_input.setPlaceholderText("Confirm new password")
+        self.confirm_password_input.setPlaceholderText("Подтвердить новый пароль")
         self.confirm_password_input.setMinimumHeight(35)
         password_layout.addWidget(self.confirm_password_input)
         
@@ -842,12 +839,12 @@ class EditUserDialog(QDialog):
         btn_layout = QHBoxLayout()
         btn_layout.setSpacing(10)
         
-        cancel_btn = QPushButton("Cancel")
+        cancel_btn = QPushButton("Отмена")
         cancel_btn.setMinimumHeight(40)
         cancel_btn.clicked.connect(self.reject)
         btn_layout.addWidget(cancel_btn)
         
-        save_btn = QPushButton("💾 Save Changes")
+        save_btn = QPushButton("💾 Сохранить")
         save_btn.setMinimumHeight(40)
         save_btn.setStyleSheet("background-color: #4CAF50; color: white;")
         save_btn.clicked.connect(self.validate_and_accept)
@@ -905,10 +902,10 @@ class EditUserDialog(QDialog):
         # If password fields are filled, validate them
         if new_password or confirm_password:
             if new_password != confirm_password:
-                QMessageBox.warning(self, "Error", "Passwords do not match!")
+                QMessageBox.warning(self, "Error", "Пароль и его подтверждение не совпадают!")
                 return
             if len(new_password) < 6:
-                QMessageBox.warning(self, "Error", "Password must be at least 6 characters!")
+                QMessageBox.warning(self, "Error", "Пароль должен содержать не менее 6 символов!")
                 return
         
         self.accept()

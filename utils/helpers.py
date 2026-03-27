@@ -1,11 +1,10 @@
-"""
-Helper functions
-"""
 from datetime import datetime, timedelta
 
 
 def format_time(seconds: float) -> str:
-    """Format seconds to HH:MM:SS"""
+    """
+    Format seconds to HH:MM:SS
+    """
     if seconds < 0:
         prefix = "-"
         seconds = abs(seconds)
@@ -20,7 +19,9 @@ def format_time(seconds: float) -> str:
 
 
 def format_duration(hours: float) -> str:
-    """Format hours to readable string"""
+    """
+    Format hours to readable string
+    """
     if hours < 1:
         minutes = int(hours * 60)
         return f"{minutes} min"
@@ -33,12 +34,16 @@ def format_duration(hours: float) -> str:
 
 
 def format_currency(amount: float, currency: str = "UZS") -> str:
-    """Format amount to currency string"""
+    """
+    Format amount to currency string
+    """
     return f"{amount:,.0f} {currency}"
 
 
 def parse_hours(hours_str: str) -> float:
-    """Parse hours string (e.g., '1.5', '2', '1h30m')"""
+    """
+    Parse hours string (e.g., '1.5', '2', '1h30m')
+    """
     hours_str = hours_str.strip().lower()
     
     # Check for hour:minute format
@@ -56,7 +61,9 @@ def parse_hours(hours_str: str) -> float:
 
 
 def get_time_remaining_color(seconds: float) -> str:
-    """Get color based on remaining time"""
+    """
+    Get color based on remaining time
+    """
     if seconds < 0:
         return 'danger'  # Overdue
     elif seconds < 300:  # Less than 5 minutes
@@ -66,10 +73,14 @@ def get_time_remaining_color(seconds: float) -> str:
 
 
 def calculate_end_time(start_time: datetime, hours: float) -> datetime:
-    """Calculate end time based on start time and hours"""
+    """
+    Calculate end time based on start time and hours
+    """
     return start_time + timedelta(hours=hours)
 
 
 def seconds_until(target_time: datetime) -> float:
-    """Get seconds until target time"""
+    """
+    Get seconds until target time
+    """
     return (target_time - datetime.now()).total_seconds()

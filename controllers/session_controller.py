@@ -1,6 +1,3 @@
-"""
-Session management controller - Core business logic
-"""
 from datetime import datetime, timedelta
 from typing import List, Optional, Tuple, Dict
 
@@ -15,12 +12,18 @@ from config import FREE_JOYSTICKS_PER_SESSION, MAX_JOYSTICKS_PER_SESSION
 
 
 class SessionController:
-    """Controller for Session management"""
+    """
+    Controller for Session management
+    """
     
     @staticmethod
-    def start_session(playstation_id: int, admin_id: int, session_type: SessionType,
-                     target_value: Optional[float] = None,
-                     initial_joysticks: int = 2) -> Tuple[bool, str, Optional[Session]]:
+    def start_session(
+        playstation_id: int, 
+        admin_id: int, 
+        session_type: SessionType,
+        target_value: Optional[float] = None,
+        initial_joysticks: int = 2
+    ) -> Tuple[bool, str, Optional[Session]]:
         """
         Start a new session
         
@@ -39,17 +42,17 @@ class SessionController:
             # Get playstation
             ps = db.query(Playstation).filter(Playstation.id == playstation_id).first()
             if not ps:
-                return False, "Playstation not found", None
+                return False, "Playstation не найден", None
             
             if ps.status != PlaystationStatus.FREE:
-                return False, "Playstation is not available", None
+                return False, "Playstation не доступен", None
             
             # Check joystick availability
             if initial_joysticks > FREE_JOYSTICKS_PER_SESSION:
                 extra_needed = initial_joysticks - FREE_JOYSTICKS_PER_SESSION
                 available = JoystickController.get_available_count()
                 if available < extra_needed:
-                    return False, f"Not enough extra joysticks. Available: {available}", None
+                    return False, f"Нет в наличии. Доступно: {available}", None
             
             # Create session
             session = Session(
@@ -83,7 +86,7 @@ class SessionController:
             db.commit()
             db.refresh(session)
             
-            return True, "Session started successfully", session
+            return True, "Сессия успешно запущена", session
             
         except Exception as e:
             db.rollback()
@@ -104,26 +107,26 @@ class SessionController:
             ).first()
             
             if not session:
-                return False, "Active session not found"
+                return False, "Активная сессия не найдена"
             
             # Validate joystick count
             if new_joystick_count < FREE_JOYSTICKS_PER_SESSION:
-                return False, f"Minimum joystick count is {FREE_JOYSTICKS_PER_SESSION}"
+                return False, f"Минимальное количество джойстиков: {FREE_JOYSTICKS_PER_SESSION}"
             
             if new_joystick_count > MAX_JOYSTICKS_PER_SESSION:
-                return False, f"Maximum joystick count is {MAX_JOYSTICKS_PER_SESSION}"
+                return False, f"Максимальное количество джойстиков: {MAX_JOYSTICKS_PER_SESSION}"
             
             current_count = session.current_joystick_count
             
             if new_joystick_count == current_count:
-                return True, "No change in joystick count"
+                return True, "Количество джойстиков не изменилось"
             
             # Check joystick availability if adding
             if new_joystick_count > current_count:
                 extra_needed = new_joystick_count - current_count
                 available = JoystickController.get_available_count()
                 if available < extra_needed:
-                    return False, f"Not enough joysticks. Available: {available}"
+                    return False, f"Нет в наличии. Доступно: {available}"
             
             # Close current segment
             current_segment = next(
@@ -159,7 +162,7 @@ class SessionController:
                 JoystickController.release_joysticks(release_count)
             
             db.commit()
-            return True, f"Joystick count updated to {new_joystick_count}"
+            return True, f"Количество джойстиков обновлено до {new_joystick_count}"
             
         except Exception as e:
             db.rollback()
@@ -201,8 +204,8 @@ class SessionController:
                 cash_amount = 0
                 terminal_amount = total_price
             elif payment_type == PaymentType.HYBRID:
-                if abs((cash_amount + terminal_amount) - total_price) > 1:  # Allow 1 UZS tolerance
-                    return False, "Cash + Terminal must equal total price", total_price
+                if abs((cash_amount + terminal_amount) - total_price) > 500:  # Allow 1 UZS tolerance
+                    return False, "Наличные + Терминал должны равняться общей цене +-500", total_price
             
             # End session
             session.end_session(
@@ -226,7 +229,7 @@ class SessionController:
                 )
             
             db.commit()
-            return True, "Session ended successfully", total_price
+            return True, "Сессия завершена", total_price
             
         except Exception as e:
             db.rollback()
@@ -310,3 +313,4 @@ class SessionController:
                 ps.status = PlaystationStatus.RUNNING
         
         db.commit()
+

@@ -12,7 +12,7 @@ DATABASE_PATH = BASE_DIR / "playstation_cafe.db"
 DATABASE_URL = f"sqlite:///{DATABASE_PATH}"
 
 # Application Settings
-APP_NAME = "PlayStation Cafe Manager"
+APP_NAME = "Amir Arena"
 APP_VERSION = "1.0.0"
 
 # Default Pricing (in UZS)

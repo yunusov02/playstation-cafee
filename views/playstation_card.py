@@ -1,6 +1,3 @@
-"""
-Playstation card widget for dashboard
-"""
 from PyQt6.QtWidgets import (
     QFrame, QVBoxLayout, QHBoxLayout, QLabel, 
     QPushButton, QSizePolicy
@@ -59,7 +56,7 @@ class PlaystationCard(QFrame):
         layout.addLayout(header_layout)
         
         # Status
-        self.status_label = QLabel("FREE")
+        self.status_label = QLabel("Свободен")
         self.status_label.setObjectName("status")
         self.status_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(self.status_label)
@@ -97,16 +94,16 @@ class PlaystationCard(QFrame):
         buttons_layout = QHBoxLayout()
         buttons_layout.setSpacing(10)
         
-        self.start_btn = QPushButton("Start")
+        self.start_btn = QPushButton("Начать")
         self.start_btn.setProperty("class", "success")
         self.start_btn.clicked.connect(self._on_start_clicked)
         buttons_layout.addWidget(self.start_btn)
         
-        self.modify_btn = QPushButton("Modify")
+        self.modify_btn = QPushButton("Изменить")
         self.modify_btn.clicked.connect(self._on_modify_clicked)
         buttons_layout.addWidget(self.modify_btn)
         
-        self.end_btn = QPushButton("End")
+        self.end_btn = QPushButton("Завершить")
         self.end_btn.setProperty("class", "danger")
         self.end_btn.clicked.connect(self._on_end_clicked)
         buttons_layout.addWidget(self.end_btn)
@@ -129,8 +126,8 @@ class PlaystationCard(QFrame):
                 
                 # Session type label
                 type_labels = {
-                    SessionType.HOURLY: "⏱️ Hourly",
-                    SessionType.AMOUNT: "💰 Amount",
+                    SessionType.HOURLY: "⏱️ Часовой",
+                    SessionType.AMOUNT: "💰 Суммовый",
                     SessionType.VIP: "⭐ VIP"
                 }
                 self.session_type_label.setText(type_labels.get(session.session_type, ""))

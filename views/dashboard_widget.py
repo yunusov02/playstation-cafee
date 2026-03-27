@@ -1,6 +1,3 @@
-"""
-Dashboard widget with playstation grid
-"""
 from PyQt6.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QLabel,
     QScrollArea, QFrame, QGridLayout, QPushButton
@@ -15,7 +12,9 @@ from config import GRID_SPACING
 
 
 class DashboardWidget(QWidget):
-    """Main dashboard showing all playstations"""
+    """
+    Main dashboard showing all playstations
+    """
     
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -38,7 +37,7 @@ class DashboardWidget(QWidget):
         # Header
         header_layout = QHBoxLayout()
         
-        title = QLabel("🎮 Dashboard")
+        title = QLabel("🎮 Панель управления")
         title.setStyleSheet("font-size: 24px; font-weight: bold;")
         header_layout.addWidget(title)
         
@@ -49,18 +48,18 @@ class DashboardWidget(QWidget):
         stats_layout = QHBoxLayout(self.stats_frame)
         stats_layout.setSpacing(30)
         
-        self.active_sessions_label = QLabel("Active: 0")
+        self.active_sessions_label = QLabel("Активный: 0")
         self.active_sessions_label.setStyleSheet("font-size: 14px;")
         stats_layout.addWidget(self.active_sessions_label)
         
-        self.available_joysticks_label = QLabel("🎮 Available: 0")
+        self.available_joysticks_label = QLabel("🎮 Доступно: 0")
         self.available_joysticks_label.setStyleSheet("font-size: 14px;")
         stats_layout.addWidget(self.available_joysticks_label)
         
         header_layout.addWidget(self.stats_frame)
         
         # Refresh button
-        refresh_btn = QPushButton("🔄 Refresh")
+        refresh_btn = QPushButton("🔄 Обновить")
         refresh_btn.clicked.connect(self.load_playstations)
         header_layout.addWidget(refresh_btn)
         
@@ -119,8 +118,8 @@ class DashboardWidget(QWidget):
         available = JoystickController.get_available_count()
         total = JoystickController.get_total_count()
         
-        self.active_sessions_label.setText(f"Active Sessions: {active}")
-        self.available_joysticks_label.setText(f"🎮 Joysticks: {available}/{total}")
+        self.active_sessions_label.setText(f"Активный сеансы: {active}")
+        self.available_joysticks_label.setText(f"🎮 Джойстики: {available}/{total}")
     
     def check_sessions(self):
         """Check for overdue sessions and play sound"""

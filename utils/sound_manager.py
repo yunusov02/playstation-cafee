@@ -1,14 +1,12 @@
-"""
-Sound management for notifications
-"""
 import os
 from pathlib import Path
 from config import BASE_DIR, SOUND_ENABLED
 
 
 class SoundManager:
-    """Manage sound effects"""
-    
+    """
+    Manage sound effects
+    """
     _enabled = SOUND_ENABLED
     _player = None
     

@@ -1,6 +1,3 @@
-"""
-Reports widget for generating and viewing reports
-"""
 from PyQt6.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton,
     QTabWidget, QTableWidget, QTableWidgetItem, QFrame,
@@ -14,7 +11,9 @@ from utils import StyleManager, format_currency, format_duration
 
 
 class ReportsWidget(QWidget):
-    """Widget for report generation and viewing"""
+    """
+    Widget for report generation and viewing
+    """
     
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -28,7 +27,7 @@ class ReportsWidget(QWidget):
         layout.setSpacing(15)
         
         # Title
-        title = QLabel("📊 Reports & Analytics")
+        title = QLabel("📊 Отчеты и аналитика")
         title.setStyleSheet("font-size: 24px; font-weight: bold;")
         layout.addWidget(title)
         
@@ -39,57 +38,57 @@ class ReportsWidget(QWidget):
         daily_tab = QWidget()
         daily_layout = QVBoxLayout(daily_tab)
         
-        daily_btn = QPushButton("📅 Generate Daily Report")
+        daily_btn = QPushButton("📅 Генерировать ежедневный отчет")
         daily_btn.clicked.connect(self.generate_daily_report)
         daily_layout.addWidget(daily_btn)
         
-        tabs.addTab(daily_tab, "Daily")
+        tabs.addTab(daily_tab, "Ежедневный")
         
         # Weekly tab
         weekly_tab = QWidget()
         weekly_layout = QVBoxLayout(weekly_tab)
         
-        weekly_btn = QPushButton("📆 Generate Weekly Report")
+        weekly_btn = QPushButton("📆 Генерировать еженедельный отчет")
         weekly_btn.clicked.connect(self.generate_weekly_report)
         weekly_layout.addWidget(weekly_btn)
         
-        tabs.addTab(weekly_tab, "Weekly")
+        tabs.addTab(weekly_tab, "Еженедельный")
         
         # Monthly tab
         monthly_tab = QWidget()
         monthly_layout = QVBoxLayout(monthly_tab)
         
-        monthly_btn = QPushButton("📅 Generate Monthly Report")
+        monthly_btn = QPushButton("📅 Генерировать ежемесячный отчет")
         monthly_btn.clicked.connect(self.generate_monthly_report)
         monthly_layout.addWidget(monthly_btn)
         
-        tabs.addTab(monthly_tab, "Monthly")
+        tabs.addTab(monthly_tab, "Ежемесячный")
         
         # Custom tab
         custom_tab = QWidget()
         custom_layout = QVBoxLayout(custom_tab)
         
         date_layout = QHBoxLayout()
-        date_layout.addWidget(QLabel("From:"))
+        date_layout.addWidget(QLabel("Старт:"))
         self.start_date = QDateEdit()
         self.start_date.setDate(QDate.currentDate().addDays(-7))
         self.start_date.setCalendarPopup(True)
         date_layout.addWidget(self.start_date)
         
-        date_layout.addWidget(QLabel("To:"))
+        date_layout.addWidget(QLabel("Окончание:"))
         self.end_date = QDateEdit()
         self.end_date.setDate(QDate.currentDate())
         self.end_date.setCalendarPopup(True)
         date_layout.addWidget(self.end_date)
         
-        custom_btn = QPushButton("Generate Custom Report")
+        custom_btn = QPushButton("📊 Генерировать отчет")
         custom_btn.clicked.connect(self.generate_custom_report)
         date_layout.addWidget(custom_btn)
         
         date_layout.addStretch()
         custom_layout.addLayout(date_layout)
         
-        tabs.addTab(custom_tab, "Custom")
+        tabs.addTab(custom_tab, "Пользовательский")
         
         layout.addWidget(tabs)
         
@@ -99,40 +98,40 @@ class ReportsWidget(QWidget):
         report_layout = QVBoxLayout(self.report_frame)
         
         # Overview section
-        overview_group = QGroupBox("📈 Overview")
+        overview_group = QGroupBox("📈 Обзор")
         self.overview_grid = QGridLayout(overview_group)
         
-        self.sessions_label = QLabel("Sessions: -")
+        self.sessions_label = QLabel("Сессии: -")
         self.overview_grid.addWidget(self.sessions_label, 0, 0)
         
-        self.revenue_label = QLabel("Revenue: -")
+        self.revenue_label = QLabel("Доход: -")
         self.overview_grid.addWidget(self.revenue_label, 0, 1)
         
-        self.hours_label = QLabel("Total Hours: -")
+        self.hours_label = QLabel("Всего часов: -")
         self.overview_grid.addWidget(self.hours_label, 0, 2)
         
-        self.avg_session_label = QLabel("Avg Session: -")
+        self.avg_session_label = QLabel("Средняя сессия: -")
         self.overview_grid.addWidget(self.avg_session_label, 1, 0)
         
-        self.avg_revenue_label = QLabel("Avg Revenue: -")
+        self.avg_revenue_label = QLabel("Средний доход: -")
         self.overview_grid.addWidget(self.avg_revenue_label, 1, 1)
         
-        self.most_used_label = QLabel("Most Used: -")
+        self.most_used_label = QLabel("Наиболее используемый: -")
         self.overview_grid.addWidget(self.most_used_label, 1, 2)
         
         report_layout.addWidget(overview_group)
         
         # Payment breakdown
-        payment_group = QGroupBox("💳 Payment Breakdown")
+        payment_group = QGroupBox("💳 Разбивка платежей")
         payment_layout = QHBoxLayout(payment_group)
-        
-        self.cash_label = QLabel("Cash: -")
+
+        self.cash_label = QLabel("Наличные: -")
         payment_layout.addWidget(self.cash_label)
-        
-        self.terminal_label = QLabel("Terminal: -")
+
+        self.terminal_label = QLabel("Карта: -")
         payment_layout.addWidget(self.terminal_label)
-        
-        self.hybrid_label = QLabel("Hybrid: -")
+
+        self.hybrid_label = QLabel("Смешанная оплата: -")
         payment_layout.addWidget(self.hybrid_label)
         
         payment_layout.addStretch()
@@ -140,12 +139,12 @@ class ReportsWidget(QWidget):
         report_layout.addWidget(payment_group)
         
         # Playstation breakdown table
-        ps_group = QGroupBox("🎮 Playstation Breakdown")
+        ps_group = QGroupBox("🎮 Разбивка playstation")
         ps_layout = QVBoxLayout(ps_group)
         
         self.ps_table = QTableWidget()
         self.ps_table.setColumnCount(4)
-        self.ps_table.setHorizontalHeaderLabels(["Playstation", "Sessions", "Hours", "Revenue"])
+        self.ps_table.setHorizontalHeaderLabels(["Playstation", "Сессии", "Часы", "Доход"])
         self.ps_table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
         self.ps_table.setAlternatingRowColors(True)
         ps_layout.addWidget(self.ps_table)
@@ -185,17 +184,17 @@ class ReportsWidget(QWidget):
         self.current_report = report
         
         # Update overview
-        self.sessions_label.setText(f"Sessions: {report['total_sessions']}")
-        self.revenue_label.setText(f"Revenue: {format_currency(report['total_revenue'])}")
-        self.hours_label.setText(f"Total Hours: {report['total_hours']:.1f}")
-        self.avg_session_label.setText(f"Avg Duration: {format_duration(report['average_session_duration'])}")
-        self.avg_revenue_label.setText(f"Avg Revenue: {format_currency(report['average_session_revenue'])}")
-        self.most_used_label.setText(f"Most Used: {report['most_used_playstation'] or '-'}")
+        self.sessions_label.setText(f"Сессии: {report['total_sessions']}")
+        self.revenue_label.setText(f"Доход: {format_currency(report['total_revenue'])}")
+        self.hours_label.setText(f"Общие часы: {report['total_hours']:.1f}")
+        self.avg_session_label.setText(f"Средняя продолжительность: {format_duration(report['average_session_duration'])}")
+        self.avg_revenue_label.setText(f"Средний доход: {format_currency(report['average_session_revenue'])}")
+        self.most_used_label.setText(f"Наиболее используемый: {report['most_used_playstation'] or '-'}")
         
         # Update payment breakdown
-        self.cash_label.setText(f"💵 Cash: {format_currency(report['cash_revenue'])} ({report['cash_sessions']} sessions)")
-        self.terminal_label.setText(f"💳 Terminal: {format_currency(report['terminal_revenue'])} ({report['terminal_sessions']} sessions)")
-        self.hybrid_label.setText(f"🔀 Hybrid: {report['hybrid_sessions']} sessions")
+        self.cash_label.setText(f"💵 Наличные: {format_currency(report['cash_revenue'])} ({report['cash_sessions']} sessions)")
+        self.terminal_label.setText(f"💳 Карта: {format_currency(report['terminal_revenue'])} ({report['terminal_sessions']} sessions)")
+        self.hybrid_label.setText(f"🔀 Смешанная оплата: {report['hybrid_sessions']} sessions")
         
         # Update playstation table
         ps_revenue = report['revenue_per_playstation']

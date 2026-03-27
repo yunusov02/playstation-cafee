@@ -1,6 +1,3 @@
-"""
-Joystick management controller
-"""
 from typing import List, Tuple, Optional
 
 from database import get_db
@@ -9,19 +6,24 @@ from config import DEFAULT_JOYSTICK_HOUR_PRICE
 
 
 class JoystickController:
-    """Controller for Joystick management"""
+    """
+    Controller for Joystick management
+    """
     
     @staticmethod
-    def create_joystick(name: str, model: str,
-                       price_per_hour: float = DEFAULT_JOYSTICK_HOUR_PRICE) -> Tuple[bool, str]:
-        """Create new joystick"""
+    def create_joystick(
+        name: str, 
+        model: str,
+        price_per_hour: float = DEFAULT_JOYSTICK_HOUR_PRICE
+    ) -> Tuple[bool, str]:
+    
         db = get_db()
         try:
             joystick = Joystick(name=name, model=model, price_per_hour=price_per_hour)
             db.add(joystick)
             db.commit()
             
-            return True, f"Joystick '{name}' created successfully"
+            return True, f"Новый джойстик '{name}' создан успешно"
             
         except Exception as e:
             db.rollback()
@@ -29,13 +31,19 @@ class JoystickController:
     
     @staticmethod
     def get_all_joysticks() -> List[Joystick]:
-        """Get all active joysticks"""
+        """
+        Get all active joysticks
+        """
+        
         db = get_db()
         return db.query(Joystick).filter(Joystick.is_active == True).all()
     
     @staticmethod
     def get_available_joysticks() -> List[Joystick]:
-        """Get all available joysticks"""
+        """
+        Get all available joysticks
+        """
+        
         db = get_db()
         return db.query(Joystick).filter(
             Joystick.status == JoystickStatus.AVAILABLE,
@@ -44,7 +52,10 @@ class JoystickController:
     
     @staticmethod
     def get_available_count() -> int:
-        """Get count of available joysticks"""
+        """
+        Get count of available joysticks
+        """
+        
         db = get_db()
         return db.query(Joystick).filter(
             Joystick.status == JoystickStatus.AVAILABLE,
@@ -53,13 +64,18 @@ class JoystickController:
     
     @staticmethod
     def get_total_count() -> int:
-        """Get total count of active joysticks"""
+        """
+        Get total count of active joysticks
+        """
         db = get_db()
         return db.query(Joystick).filter(Joystick.is_active == True).count()
     
     @staticmethod
     def allocate_joysticks(count: int) -> Tuple[bool, str]:
-        """Allocate joysticks for a session"""
+        """
+        Allocate joysticks for a session
+        """
+        
         db = get_db()
         try:
             available = db.query(Joystick).filter(
@@ -68,13 +84,13 @@ class JoystickController:
             ).limit(count).all()
             
             if len(available) < count:
-                return False, f"Not enough joysticks. Available: {len(available)}, Requested: {count}"
+                return False, f"Нет в наличии: {len(available)}, Requested: {count}"
             
             for joystick in available:
                 joystick.status = JoystickStatus.IN_USE
             
             db.commit()
-            return True, "Joysticks allocated"
+            return True, "Джойстики выделены"
             
         except Exception as e:
             db.rollback()
@@ -82,7 +98,10 @@ class JoystickController:
     
     @staticmethod
     def release_joysticks(count: int) -> Tuple[bool, str]:
-        """Release joysticks back to pool"""
+        """
+        Release joysticks back to pool
+        """
+        
         db = get_db()
         try:
             in_use = db.query(Joystick).filter(
@@ -94,21 +113,27 @@ class JoystickController:
                 joystick.status = JoystickStatus.AVAILABLE
             
             db.commit()
-            return True, "Joysticks released"
+            return True, "Джойстики освобождены"
             
         except Exception as e:
             db.rollback()
             return False, f"Error releasing joysticks: {str(e)}"
     
     @staticmethod
-    def update_joystick(joystick_id: int, name: str = None, model: str = None,
-                       price_per_hour: float = None) -> Tuple[bool, str]:
+    def update_joystick(
+        joystick_id: int, 
+        name: str = None, 
+        model: str = None,
+        price_per_hour: float = None
+    ) -> Tuple[bool, str]:
+    
         """Update joystick details"""
+
         db = get_db()
         try:
             joystick = db.query(Joystick).filter(Joystick.id == joystick_id).first()
             if not joystick:
-                return False, "Joystick not found"
+                return False, "Джойстик не найден"
             
             if name:
                 joystick.name = name
@@ -118,7 +143,7 @@ class JoystickController:
                 joystick.price_per_hour = price_per_hour
             
             db.commit()
-            return True, "Joystick updated successfully"
+            return True, "Джойстик обновлен"
             
         except Exception as e:
             db.rollback()
@@ -126,19 +151,21 @@ class JoystickController:
     
     @staticmethod
     def delete_joystick(joystick_id: int) -> Tuple[bool, str]:
-        """Deactivate joystick"""
+        """
+        Deactivate joystick
+        """
         db = get_db()
         try:
             joystick = db.query(Joystick).filter(Joystick.id == joystick_id).first()
             if not joystick:
-                return False, "Joystick not found"
+                return False, "Джойстик не найден"
             
             if joystick.status == JoystickStatus.IN_USE:
-                return False, "Cannot delete joystick in use"
+                return False, "Невозможно удалить используемый джойстик"
             
             joystick.is_active = False
             db.commit()
-            return True, "Joystick deleted"
+            return True, "Джойстик удален"
             
         except Exception as e:
             db.rollback()
@@ -152,3 +179,4 @@ class JoystickController:
         if joystick:
             return joystick.price_per_hour
         return DEFAULT_JOYSTICK_HOUR_PRICE
+    

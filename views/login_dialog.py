@@ -1,6 +1,3 @@
-"""
-Login dialog
-"""
 from PyQt6.QtWidgets import (
     QDialog, QVBoxLayout, QHBoxLayout, QLabel, 
     QLineEdit, QPushButton, QMessageBox, QFrame
@@ -10,6 +7,7 @@ from PyQt6.QtGui import QFont
 
 from controllers import AuthController
 from utils import StyleManager
+from config import APP_NAME
 
 
 class LoginDialog(QDialog):
@@ -17,7 +15,7 @@ class LoginDialog(QDialog):
     
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.setWindowTitle("Login - PlayStation Cafe Manager")
+        self.setWindowTitle(f"Вход {APP_NAME}")
         self.setFixedSize(400, 350)
         self.setWindowFlags(Qt.WindowType.FramelessWindowHint | Qt.WindowType.Dialog)
         self.setup_ui()
@@ -30,7 +28,7 @@ class LoginDialog(QDialog):
         layout.setSpacing(20)
         
         # Title
-        title_label = QLabel("🎮 PlayStation Cafe")
+        title_label = QLabel("🎮 Amir Arena")
         title_label.setObjectName("title")
         title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         title_font = QFont()
@@ -40,7 +38,7 @@ class LoginDialog(QDialog):
         layout.addWidget(title_label)
         
         # Subtitle
-        subtitle = QLabel("Admin Login")
+        subtitle = QLabel("Вход для администраторов")
         subtitle.setAlignment(Qt.AlignmentFlag.AlignCenter)
         subtitle.setStyleSheet("color: gray; font-size: 14px;")
         layout.addWidget(subtitle)
@@ -49,13 +47,13 @@ class LoginDialog(QDialog):
         
         # Username
         self.username_input = QLineEdit()
-        self.username_input.setPlaceholderText("Username")
+        self.username_input.setPlaceholderText("Имя пользователя")
         self.username_input.setMinimumHeight(45)
         layout.addWidget(self.username_input)
         
         # Password
         self.password_input = QLineEdit()
-        self.password_input.setPlaceholderText("Password")
+        self.password_input.setPlaceholderText("Пароль")
         self.password_input.setEchoMode(QLineEdit.EchoMode.Password)
         self.password_input.setMinimumHeight(45)
         self.password_input.returnPressed.connect(self.handle_login)
@@ -64,7 +62,7 @@ class LoginDialog(QDialog):
         layout.addSpacing(10)
         
         # Login button
-        self.login_btn = QPushButton("Login")
+        self.login_btn = QPushButton("Вход")
         self.login_btn.setMinimumHeight(50)
         self.login_btn.clicked.connect(self.handle_login)
         layout.addWidget(self.login_btn)
@@ -78,7 +76,7 @@ class LoginDialog(QDialog):
         layout.addStretch()
         
         # Close button
-        close_btn = QPushButton("Exit")
+        close_btn = QPushButton("Выйти")
         close_btn.setProperty("class", "secondary")
         close_btn.clicked.connect(self.reject)
         layout.addWidget(close_btn)
@@ -139,7 +137,7 @@ class LoginDialog(QDialog):
         password = self.password_input.text()
         
         if not username or not password:
-            self.error_label.setText("Please enter username and password")
+            self.error_label.setText("Пожалуйста, заполните все поля")
             return
         
         success, message = AuthController.login(username, password)

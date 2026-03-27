@@ -13,7 +13,9 @@ from config import APP_NAME
 
 
 def setup_database():
-    """Initialize database and create default data"""
+    """
+    Initialize database and create default data
+    """
     init_db()
     
     # Ensure admin user exists
@@ -38,8 +40,12 @@ def setup_database():
 
 
 def main():
-    """Main application entry point"""
-    # Enable high DPI scaling
+    """
+    Main application entry point
+    """
+    
+    # Enable high DPI scalings
+    # DPI - Dots Per Inch scalings -> How many pixels fit in one inch of your screen
     QApplication.setHighDpiScaleFactorRoundingPolicy(
         Qt.HighDpiScaleFactorRoundingPolicy.PassThrough
     )

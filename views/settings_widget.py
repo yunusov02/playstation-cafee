@@ -32,18 +32,18 @@ class SettingsWidget(QWidget):
         layout.setSpacing(20)
         
         # Title
-        title = QLabel("⚙️ Settings")
+        title = QLabel("⚙️ Настройки приложения")
         title.setStyleSheet("font-size: 24px; font-weight: bold;")
         layout.addWidget(title)
         
         # Appearance settings
-        appearance_group = QGroupBox("🎨 Appearance")
+        appearance_group = QGroupBox("🎨 Тема")
         appearance_layout = QVBoxLayout(appearance_group)
         
         theme_layout = QHBoxLayout()
-        theme_layout.addWidget(QLabel("Theme:"))
+        theme_layout.addWidget(QLabel("Тема:"))
         
-        self.dark_mode_checkbox = QCheckBox("Dark Mode")
+        self.dark_mode_checkbox = QCheckBox("Тёмная тема")
         self.dark_mode_checkbox.toggled.connect(self.toggle_dark_mode)
         theme_layout.addWidget(self.dark_mode_checkbox)
         
@@ -53,21 +53,21 @@ class SettingsWidget(QWidget):
         layout.addWidget(appearance_group)
         
         # Sound settings
-        sound_group = QGroupBox("🔊 Sound")
+        sound_group = QGroupBox("🔊 Звук")
         sound_layout = QVBoxLayout(sound_group)
         
-        self.sound_enabled_checkbox = QCheckBox("Enable sound effects")
+        self.sound_enabled_checkbox = QCheckBox("Звуковые эффекты")
         self.sound_enabled_checkbox.toggled.connect(self.toggle_sound)
         sound_layout.addWidget(self.sound_enabled_checkbox)
         
         layout.addWidget(sound_group)
         
         # Pricing settings
-        pricing_group = QGroupBox("💰 Default Pricing")
+        pricing_group = QGroupBox("💰 Стандартные цены")
         pricing_layout = QVBoxLayout(pricing_group)
         
         ps_price_layout = QHBoxLayout()
-        ps_price_layout.addWidget(QLabel("PlayStation price per hour:"))
+        ps_price_layout.addWidget(QLabel("Цена PlayStation за час:"))
         self.ps_price_spin = QDoubleSpinBox()
         self.ps_price_spin.setRange(1000, 100000)
         self.ps_price_spin.setSingleStep(1000)
@@ -78,7 +78,7 @@ class SettingsWidget(QWidget):
         pricing_layout.addLayout(ps_price_layout)
         
         joy_price_layout = QHBoxLayout()
-        joy_price_layout.addWidget(QLabel("Joystick price per hour:"))
+        joy_price_layout.addWidget(QLabel("Цена Joystick за час:"))
         self.joy_price_spin = QDoubleSpinBox()
         self.joy_price_spin.setRange(500, 50000)
         self.joy_price_spin.setSingleStep(500)
@@ -91,11 +91,11 @@ class SettingsWidget(QWidget):
         layout.addWidget(pricing_group)
         
         # Session settings
-        session_group = QGroupBox("🎮 Session Settings")
+        session_group = QGroupBox("🎮 Настройки сессии")
         session_layout = QVBoxLayout(session_group)
         
         free_joy_layout = QHBoxLayout()
-        free_joy_layout.addWidget(QLabel("Free joysticks per session:"))
+        free_joy_layout.addWidget(QLabel("Бесплатные джойстики на сессию:"))
         self.free_joy_spin = QSpinBox()
         self.free_joy_spin.setRange(0, 5)
         self.free_joy_spin.setValue(FREE_JOYSTICKS_PER_SESSION)
@@ -104,7 +104,7 @@ class SettingsWidget(QWidget):
         session_layout.addLayout(free_joy_layout)
         
         max_joy_layout = QHBoxLayout()
-        max_joy_layout.addWidget(QLabel("Maximum joysticks per session:"))
+        max_joy_layout.addWidget(QLabel("Максимальное количество джойстиков на сессию:"))
         self.max_joy_spin = QSpinBox()
         self.max_joy_spin.setRange(2, 10)
         self.max_joy_spin.setValue(MAX_JOYSTICKS_PER_SESSION)
@@ -117,7 +117,7 @@ class SettingsWidget(QWidget):
         layout.addStretch()
         
         # Save button
-        save_btn = QPushButton("💾 Save Settings")
+        save_btn = QPushButton("💾 Сохранить")
         save_btn.setProperty("class", "success")
         save_btn.clicked.connect(self.save_settings)
         layout.addWidget(save_btn)
@@ -140,9 +140,7 @@ class SettingsWidget(QWidget):
         """Save settings"""
         # In a real app, you would save these to a config file or database
         QMessageBox.information(
-            self, "Settings Saved",
-            "Settings have been saved successfully!"
+            self, "Сохранено",
+            "Настройки были успешно сохранены!"
         )
 
-
-# Complete the AddEditDialog get_values method from management_widget.py

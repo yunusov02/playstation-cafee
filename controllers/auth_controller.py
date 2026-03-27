@@ -1,6 +1,3 @@
-"""
-Authentication controller
-"""
 from datetime import datetime
 from typing import Optional, Tuple, List
 
@@ -9,7 +6,9 @@ from models import User
 
 
 class AuthController:
-    """Controller for user authentication and management"""
+    """
+    Controller for user authentication and management
+    """
     
     _current_user: Optional[User] = None
     
@@ -44,34 +43,41 @@ class AuthController:
     
     @classmethod
     def logout(cls):
-        """Logout current user"""
+        """
+        Logout current user
+        """
         cls._current_user = None
     
     @classmethod
     def get_current_user(cls) -> Optional[User]:
-        """Get currently logged in user"""
+        """
+        Get currently logged in user
+        """
         return cls._current_user
     
     @classmethod
     def is_authenticated(cls) -> bool:
-        """Check if user is authenticated"""
+        """
+        Check if user is authenticated
+        """
         return cls._current_user is not None
     
     @classmethod
     def create_user(cls, full_name: str, username: str, password: str) -> Tuple[bool, str]:
-        """Create new user"""
+        
         db = get_db()
+        
         try:
             # Check if username exists
             existing = db.query(User).filter(User.username == username).first()
             if existing:
-                return False, "Username already exists"
+                return False, "Такой пользователь уже существует"
             
             user = User(full_name=full_name, username=username, password=password)
             db.add(user)
             db.commit()
             
-            return True, "User created successfully"
+            return True, "Пользователь создано успешно"
             
         except Exception as e:
             db.rollback()
@@ -84,14 +90,18 @@ class AuthController:
         return db.query(User).filter(User.is_active == True).all()
     
     @classmethod
-    def update_user(cls, user_id: int, full_name: str = None, 
-                   password: str = None) -> Tuple[bool, str]:
-        """Update user details"""
+    def update_user(
+        cls, 
+        user_id: int, 
+        full_name: str = None, 
+        password: str = None
+    ) -> Tuple[bool, str]:
+    
         db = get_db()
         try:
             user = db.query(User).filter(User.id == user_id).first()
             if not user:
-                return False, "User not found"
+                return False, "Пользователь не найден"
             
             if full_name:
                 user.full_name = full_name
@@ -99,7 +109,7 @@ class AuthController:
                 user.update_password(password)
             
             db.commit()
-            return True, "User updated successfully"
+            return True, "Пользователь обновлен успешно"
             
         except Exception as e:
             db.rollback()
@@ -107,16 +117,16 @@ class AuthController:
     
     @classmethod
     def deactivate_user(cls, user_id: int) -> Tuple[bool, str]:
-        """Deactivate user"""
+        
         db = get_db()
         try:
             user = db.query(User).filter(User.id == user_id).first()
             if not user:
-                return False, "User not found"
+                return False, "Пользователь не найден"
             
             user.is_active = False
             db.commit()
-            return True, "User deactivated"
+            return True, "Пользователь деактивирован успешно"
             
         except Exception as e:
             db.rollback()
@@ -124,9 +134,13 @@ class AuthController:
     
     @classmethod
     def ensure_admin_exists(cls):
-        """Ensure at least one admin user exists"""
+        """
+        Ensure at least one admin user exists
+        """
+        
         db = get_db()
         admin_count = db.query(User).filter(User.is_active == True).count()
         
         if admin_count == 0:
             cls.create_user("Administrator", "admin", "admin123")
+

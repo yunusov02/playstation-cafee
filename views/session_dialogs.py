@@ -1,6 +1,3 @@
-"""
-Session management dialogs
-"""
 from PyQt6.QtWidgets import (
     QDialog, QVBoxLayout, QHBoxLayout, QLabel, QLineEdit,
     QPushButton, QRadioButton, QButtonGroup, QSpinBox,
@@ -23,7 +20,7 @@ class StartSessionDialog(QDialog):
         self.ps_name = ps_name
         self.ps_price = ps_price
         
-        self.setWindowTitle(f"Start Session - {ps_name}")
+        self.setWindowTitle(f"Начинать сессии - {ps_name}")
         self.setFixedWidth(450)
         self.setup_ui()
         self.apply_styles()
@@ -35,7 +32,7 @@ class StartSessionDialog(QDialog):
         layout.setSpacing(20)
         
         # Title
-        title = QLabel(f"🎮 Start Session on {self.ps_name}")
+        title = QLabel(f"🎮 Начать сессии {self.ps_name}")
         title.setObjectName("title")
         title_font = QFont()
         title_font.setPointSize(18)
@@ -44,14 +41,14 @@ class StartSessionDialog(QDialog):
         layout.addWidget(title)
         
         # Session Type Selection
-        type_group = QGroupBox("Session Type")
+        type_group = QGroupBox("Тип сессии")
         type_layout = QVBoxLayout(type_group)
         
         self.type_button_group = QButtonGroup(self)
         
         # Hourly option
         hourly_layout = QHBoxLayout()
-        self.hourly_radio = QRadioButton("⏱️ Fixed Hours")
+        self.hourly_radio = QRadioButton("⏱️ Фиксированное количество часов")
         self.hourly_radio.setChecked(True)
         self.type_button_group.addButton(self.hourly_radio, 1)
         hourly_layout.addWidget(self.hourly_radio)
@@ -60,7 +57,7 @@ class StartSessionDialog(QDialog):
         self.hours_spin.setRange(0.5, 12)
         self.hours_spin.setSingleStep(0.5)
         self.hours_spin.setValue(1)
-        self.hours_spin.setSuffix(" hours")
+        self.hours_spin.setSuffix(" часов")
         self.hours_spin.valueChanged.connect(self._update_preview)
         hourly_layout.addWidget(self.hours_spin)
         
@@ -68,7 +65,7 @@ class StartSessionDialog(QDialog):
         
         # Amount option
         amount_layout = QHBoxLayout()
-        self.amount_radio = QRadioButton("💰 Fixed Amount")
+        self.amount_radio = QRadioButton("💰 Фиксированная сумма")
         self.type_button_group.addButton(self.amount_radio, 2)
         amount_layout.addWidget(self.amount_radio)
         
@@ -83,17 +80,17 @@ class StartSessionDialog(QDialog):
         type_layout.addLayout(amount_layout)
         
         # VIP option
-        self.vip_radio = QRadioButton("⭐ VIP (Pay at end)")
+        self.vip_radio = QRadioButton("⭐ VIP")
         self.type_button_group.addButton(self.vip_radio, 3)
         type_layout.addWidget(self.vip_radio)
         
         layout.addWidget(type_group)
         
         # Joystick Selection
-        joystick_group = QGroupBox("Joysticks")
+        joystick_group = QGroupBox("Джойстики")
         joystick_layout = QHBoxLayout(joystick_group)
         
-        joystick_layout.addWidget(QLabel("Initial joysticks:"))
+        joystick_layout.addWidget(QLabel("Начальные джойстики:"))
         
         self.joystick_spin = QSpinBox()
         self.joystick_spin.setRange(2, 5)
@@ -102,7 +99,7 @@ class StartSessionDialog(QDialog):
         joystick_layout.addWidget(self.joystick_spin)
         
         available = JoystickController.get_available_count()
-        joystick_layout.addWidget(QLabel(f"(Available: {available + 2})"))  # +2 for free ones
+        joystick_layout.addWidget(QLabel(f"(Доступно: {available + 2})"))  # +2 for free ones
         
         joystick_layout.addStretch()
         
@@ -128,12 +125,12 @@ class StartSessionDialog(QDialog):
         button_layout = QHBoxLayout()
         button_layout.setSpacing(10)
         
-        cancel_btn = QPushButton("Cancel")
+        cancel_btn = QPushButton("Отменить")
         cancel_btn.setProperty("class", "secondary")
         cancel_btn.clicked.connect(self.reject)
         button_layout.addWidget(cancel_btn)
         
-        self.start_btn = QPushButton("🎮 Start Session")
+        self.start_btn = QPushButton("🎮 Начать сессии")
         self.start_btn.setProperty("class", "success")
         self.start_btn.clicked.connect(self.start_session)
         button_layout.addWidget(self.start_btn)
@@ -162,24 +159,24 @@ class StartSessionDialog(QDialog):
             joy_cost = hours * extra_joysticks * joystick_price
             total = ps_cost + joy_cost
             
-            preview = f"<b>Session: {hours} hours</b><br>"
+            preview = f"<b>Сессия: {hours} час</b><br>"
             preview += f"PlayStation: {format_currency(ps_cost)}<br>"
             if extra_joysticks > 0:
-                preview += f"Extra joysticks ({extra_joysticks}): {format_currency(joy_cost)}<br>"
-            preview += f"<b>Estimated Total: {format_currency(total)}</b>"
+                preview += f"Дополнительные джойстики ({extra_joysticks}): {format_currency(joy_cost)}<br>"
+            preview += f"<b>Примерная сумма: {format_currency(total)}</b>"
             
         elif self.amount_radio.isChecked():
             amount = self.amount_spin.value()
             rate = self.ps_price + extra_joysticks * joystick_price
             est_hours = amount / rate
             
-            preview = f"<b>Budget: {format_currency(amount)}</b><br>"
-            preview += f"<b>Estimated playtime: ~{est_hours:.1f} hours</b>"
-            
+            preview = f"<b>Бюджет: {format_currency(amount)}</b><br>"
+            preview += f"<b>Примерное время игры: ~{est_hours:.1f} часов</b>"
+                        
         else:  # VIP
-            preview = "<b>VIP Session</b><br>"
-            preview += "Play unlimited time, pay at the end."
-        
+            preview = "<b>VIP Сеанс</b><br>"
+            preview += "Игра без ограничений по времени, оплата в конце."        
+
         self.preview_label.setText(preview)
     
     def apply_styles(self):
@@ -190,7 +187,7 @@ class StartSessionDialog(QDialog):
         """Start the session"""
         admin = AuthController.get_current_user()
         if not admin:
-            QMessageBox.warning(self, "Error", "Not logged in")
+            QMessageBox.warning(self, "Error", "Пользователь не найден. Пожалуйста, войдите снова.")
             return
         
         # Determine session type and target value
@@ -228,7 +225,7 @@ class ModifySessionDialog(QDialog):
         self.playstation_id = playstation_id
         self.ps_name = ps_name
         
-        self.setWindowTitle(f"Modify Session - {ps_name}")
+        self.setWindowTitle(f"Изменить сессию - {ps_name}")
         self.setFixedWidth(400)
         
         self.session = SessionController.get_active_session(playstation_id)
@@ -243,7 +240,7 @@ class ModifySessionDialog(QDialog):
         layout.setSpacing(20)
         
         # Title
-        title = QLabel(f"🎮 Modify Session - {self.ps_name}")
+        title = QLabel(f"🎮 Изменить сессию - {self.ps_name}")
         title.setObjectName("title")
         title_font = QFont()
         title_font.setPointSize(18)
@@ -252,27 +249,27 @@ class ModifySessionDialog(QDialog):
         layout.addWidget(title)
         
         if not self.session:
-            layout.addWidget(QLabel("No active session found"))
+            layout.addWidget(QLabel("Сессия не найдена"))
             return
         
         # Current info
-        info_group = QGroupBox("Current Session")
+        info_group = QGroupBox("Текущая сессия")
         info_layout = QVBoxLayout(info_group)
         
         current_joysticks = self.session.current_joystick_count
-        info_layout.addWidget(QLabel(f"Current joysticks: {current_joysticks}"))
+        info_layout.addWidget(QLabel(f"Джойстики: {current_joysticks}"))
         
         session_info = SessionController.get_session_info(self.session)
         current_price = session_info.get('current_price', 0)
-        info_layout.addWidget(QLabel(f"Current price: {format_currency(current_price)}"))
+        info_layout.addWidget(QLabel(f"Текущая цена: {format_currency(current_price)}"))
         
         layout.addWidget(info_group)
         
         # Modify joysticks
-        modify_group = QGroupBox("Modify Joysticks")
+        modify_group = QGroupBox("Изменить джойстики")
         modify_layout = QHBoxLayout(modify_group)
         
-        modify_layout.addWidget(QLabel("New joystick count:"))
+        modify_layout.addWidget(QLabel("Новое количество джойстиков:"))
         
         self.joystick_spin = QSpinBox()
         self.joystick_spin.setRange(2, 5)
@@ -290,7 +287,7 @@ class ModifySessionDialog(QDialog):
         layout.addWidget(modify_group)
         
         # Note
-        note = QLabel("⚠️ Changing joysticks will create a new price segment")
+        note = QLabel("⚠️ Изменение количества джойстиков создаст новый сегмент цены")
         note.setStyleSheet("color: #FF9800; font-size: 12px;")
         note.setWordWrap(True)
         layout.addWidget(note)
@@ -298,12 +295,12 @@ class ModifySessionDialog(QDialog):
         # Buttons
         button_layout = QHBoxLayout()
         
-        cancel_btn = QPushButton("Cancel")
+        cancel_btn = QPushButton("Отменить")
         cancel_btn.setProperty("class", "secondary")
         cancel_btn.clicked.connect(self.reject)
         button_layout.addWidget(cancel_btn)
         
-        save_btn = QPushButton("Save Changes")
+        save_btn = QPushButton("Сохранить изменения")
         save_btn.clicked.connect(self.save_changes)
         button_layout.addWidget(save_btn)
         
@@ -339,7 +336,7 @@ class EndSessionDialog(QDialog):
         self.playstation_id = playstation_id
         self.ps_name = ps_name
         
-        self.setWindowTitle(f"End Session - {ps_name}")
+        self.setWindowTitle(f"Завершить сессию - {ps_name}")
         self.setFixedWidth(450)
         
         self.session = SessionController.get_active_session(playstation_id)
@@ -354,7 +351,7 @@ class EndSessionDialog(QDialog):
         layout.setSpacing(20)
         
         # Title
-        title = QLabel(f"💰 End Session - {self.ps_name}")
+        title = QLabel(f"💰 Завершить сессию - {self.ps_name}")
         title.setObjectName("title")
         title_font = QFont()
         title_font.setPointSize(18)
@@ -363,11 +360,11 @@ class EndSessionDialog(QDialog):
         layout.addWidget(title)
         
         if not self.session:
-            layout.addWidget(QLabel("No active session found"))
+            layout.addWidget(QLabel("Сессия не найдена"))
             return
         
         # Session summary
-        summary_group = QGroupBox("Session Summary")
+        summary_group = QGroupBox("Сводка сессии")
         summary_layout = QVBoxLayout(summary_group)
         
         session_info = SessionController.get_session_info(self.session)
@@ -375,41 +372,41 @@ class EndSessionDialog(QDialog):
         # Duration
         elapsed = session_info.get('elapsed_seconds', 0)
         hours = elapsed / 3600
-        summary_layout.addWidget(QLabel(f"⏱️ Duration: {hours:.2f} hours"))
-        
+        summary_layout.addWidget(QLabel(f"⏱️ Длительность: {hours:.2f} часов"))
+
         # Segments breakdown
-        summary_layout.addWidget(QLabel("\n📊 Segments:"))
+        summary_layout.addWidget(QLabel("\n📊 Сегменты:"))
         for i, segment in enumerate(self.session.segments, 1):
             seg_hours = segment.duration_hours
             seg_price = segment.calculate_price()
             summary_layout.addWidget(QLabel(
-                f"  {i}. {seg_hours:.2f}h × {segment.joystick_count} joysticks = {format_currency(seg_price)}"
+                f"  {i}. {seg_hours:.2f} ч × {segment.joystick_count} джойстики(ы) = {format_currency(seg_price)}"
             ))
         
         # Total
         self.total_price = SessionController.calculate_current_price(self.session)
-        total_label = QLabel(f"\n💵 Total: {format_currency(self.total_price)}")
+        total_label = QLabel(f"\n💵 Общая стоимость: {format_currency(self.total_price)}")
         total_label.setStyleSheet("font-size: 18px; font-weight: bold;")
         summary_layout.addWidget(total_label)
         
         layout.addWidget(summary_group)
         
         # Payment type
-        payment_group = QGroupBox("Payment Method")
+        payment_group = QGroupBox("Способ оплаты")
         payment_layout = QVBoxLayout(payment_group)
         
         self.payment_button_group = QButtonGroup(self)
         
-        self.cash_radio = QRadioButton(f"💵 Cash - {format_currency(self.total_price)}")
+        self.cash_radio = QRadioButton(f"💵 Наличные - {format_currency(self.total_price)}")
         self.cash_radio.setChecked(True)
         self.payment_button_group.addButton(self.cash_radio, 1)
         payment_layout.addWidget(self.cash_radio)
         
-        self.terminal_radio = QRadioButton(f"💳 Terminal - {format_currency(self.total_price)}")
+        self.terminal_radio = QRadioButton(f"💳 Терминал - {format_currency(self.total_price)}")
         self.payment_button_group.addButton(self.terminal_radio, 2)
         payment_layout.addWidget(self.terminal_radio)
         
-        self.hybrid_radio = QRadioButton("🔀 Hybrid (Split payment)")
+        self.hybrid_radio = QRadioButton("🔀 Смешенная оплата")
         self.payment_button_group.addButton(self.hybrid_radio, 3)
         payment_layout.addWidget(self.hybrid_radio)
         
@@ -417,7 +414,7 @@ class EndSessionDialog(QDialog):
         self.hybrid_frame = QFrame()
         hybrid_layout = QHBoxLayout(self.hybrid_frame)
         
-        hybrid_layout.addWidget(QLabel("Cash:"))
+        hybrid_layout.addWidget(QLabel("Наличные:"))
         self.cash_spin = QSpinBox()
         self.cash_spin.setRange(0, int(self.total_price))
         self.cash_spin.setSingleStep(1000)
@@ -425,7 +422,7 @@ class EndSessionDialog(QDialog):
         self.cash_spin.valueChanged.connect(self._update_terminal_amount)
         hybrid_layout.addWidget(self.cash_spin)
         
-        hybrid_layout.addWidget(QLabel("Terminal:"))
+        hybrid_layout.addWidget(QLabel("Терминал:"))
         self.terminal_amount_label = QLabel()
         hybrid_layout.addWidget(self.terminal_amount_label)
         
@@ -439,12 +436,12 @@ class EndSessionDialog(QDialog):
         # Buttons
         button_layout = QHBoxLayout()
         
-        cancel_btn = QPushButton("Cancel")
+        cancel_btn = QPushButton("Отменить")
         cancel_btn.setProperty("class", "secondary")
         cancel_btn.clicked.connect(self.reject)
         button_layout.addWidget(cancel_btn)
         
-        end_btn = QPushButton("💰 Complete Payment")
+        end_btn = QPushButton("💰 Завершить сессию")
         end_btn.setProperty("class", "success")
         end_btn.clicked.connect(self.end_session)
         button_layout.addWidget(end_btn)
@@ -496,8 +493,8 @@ class EndSessionDialog(QDialog):
         
         if success:
             QMessageBox.information(
-                self, "Session Ended",
-                f"Session completed successfully!\n\nTotal: {format_currency(total)}"
+                self, "Сеанс завершён",
+                f"Сеанс успешно завершён!\n\nИтого: {format_currency(total)}"
             )
             self.accept()
         else:

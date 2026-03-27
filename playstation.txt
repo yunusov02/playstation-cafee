@@ -1,0 +1,229 @@
+	Project Title
+
+Playstation Cafe Management System (Desktop Application)
+
+1. Goal
+Build modern offline-first desktop application using python and PyQT to manage playstation cafe with
+	a. playstations
+	b. multiple administration
+	c. Time based sessions
+	d. dynamic joystick addition or substraction during the game
+	e. accurate pricing and financial tracking
+	f. Daily weeekly monthly and custom reports to calculate income or outcome
+
+2. Technology Stack
+	Python
+	GUI framework PyQT
+	SQLite
+	ORM SQLAlchemy
+	Architecutere MVC
+	
+3. User Role & Authentication just simple session based authentication
+Every admin must
+	login with username and password
+	be tracked for every session they manage
+
+4. Core Entities
+
+Playstations
+	id
+	name
+	model
+	status (free running overdue)
+	price
+Joysticks
+	id
+	name
+	model
+	status (free running overdue)
+	price
+
+5. Session System
+	5.1 Sessions
+	A session represents the full gameplay period
+	
+		id
+		playstation_is
+		admin_id
+		start_time
+		end_time
+		cash_price
+		terminal_price
+		total_price
+		payment_type (cash, terminal, hybrid)
+		
+		(*friends may share the bill half of them pay cash some of them pay via terminal)
+	
+	5.2 Session Segements
+		A session must be split into segments to handle real-world changes
+		
+		why? customers may
+			* Add / Remove joysticks mid-game
+		
+		SessionSegment
+			id
+			session_id (fk)
+			start_time
+			end_time
+			joystick_count
+			ps_hour_price
+			joystick_hour_price
+			total_price
+			
+	5.3 Example Scenario
+		Segment		Duration	Joystick	Total
+		1		1 hour		2		15000
+		2		1 hour		4		20000
+	
+	* When session start we will give 2 joystick for free when customers want extra joysticks we can add when customers add extra joysticks they only pay for extra joysticks
+	
+	5.4 Business Rule
+		Start Session
+
+		* Create session
+		* Create first segment (may add extra joystick or not by default 2 joystick for free)
+		* customers may open three type of situation
+			* they may open for exact hour 1 2 1.5 2.5 etc
+			* they may open for exact money like 15000 25000 45000 ect.
+			* they may open for vip it means they play how much they want at the end just paid money
+		
+		Modify session (very important)
+		
+		when admin changes joystick count (add or remove)
+			1. close current segment (set end_time)
+			2. create new segment with updated joystick count (*again it if free for first 2 joystick we will give 2 joystick 
+				for free every playtstaion by default will have 2 joysticks)
+		
+		End Session
+			
+		* Close active segments
+		* calculate total from all segments
+		* save payments with payment type
+		
+6. Joystick Management
+	* calculate total available joysticks
+	* On segment start
+		* check availability
+		* deduct used joysticks
+	* On segment end
+		* return joysticks to pool
+		
+7. Real-Time Dashboard
+	Main Screen
+		* Display all playstations as modern cards/grid
+		* Each cards show
+			* playstation name
+			* status
+				* green -> running
+				* white -> free
+				* red -> overdue
+			* live countdown timer
+			* Current Joystick count
+	
+	Actions
+	* start session
+			* admin may open playstation with 3 situation
+				* exact hour like 1.1 1.5 2 2.5 hour and program should calculate price
+				* exact amount like 15000UZS 50000UZS when their money ends should close session
+				* VIP plays as much as they want at the end admin just close the session and customers just paid
+	* modify session
+		can only joystick count from 2 up 5
+	* end session
+		close the playstation
+
+8. Pricing Calculation
+	segment_price = duration_hours * playstation_price + duration_hours * (joystick_count - 2) * joystick_price
+	total_price = SUM(all segment prices)
+	
+9. Payment System
+	At session end:
+		* select payment type
+			* cash
+			* terminal
+			* hybrid
+		* store in database
+			
+10. Reports & Analytics
+	Types
+		* daily
+		* weekly
+		* monthly
+		* custom_report
+	Reports must include 
+		* total hours per PLaystation
+		* total revene
+		* revenue breakdown
+			* revenue per playstation
+			* playstayion usage
+			* joystick usage
+		* payment breakdown
+			* cash
+			* terminal
+		* must used playstation
+
+11.Database Schema Overview
+
+Users
+	id
+	full_name
+	username
+	password_hash
+	
+Playstation
+	id
+	name
+	model
+	price
+	status
+
+Sessions
+	id
+	playstation_id
+	admin_id
+	start_time
+	end_time
+	total_price
+	payment_type
+
+SessionSegments
+	id
+	session_id
+	start_time
+	end_time
+	joystick_count
+	total_price
+
+12. UI/UX Requirements
+
+* Modern design using QT stylesheets
+* Clean layout design (cards/grid)
+* Smooth user experience
+* Dialogs
+	* login screen
+	* start session modal
+	* modify session modal
+* Responsive resizing
+* Prevent starting session on already running Playstation
+* input validation
+* auto save actions
+* sound effects on timeout
+* light and dark mode support
+
+15. Key Design Principles
+
+	Do NOT overwrite session data
+	Always create new segments for changes
+	Keep logic separated (UI vs Business logic)
+	Ensure accurate financial calculations
+	
+16. Expected Outcome
+A fully functional desktop system that:
+    Manages PlayStation sessions in real-time
+    Handles dynamic joystick changes correctly
+    Calculates prices accurately
+    Provides detailed reports
+    Works fully offline with SQLite
+    Has a modern and user-friendly interface
+
+	
+	
